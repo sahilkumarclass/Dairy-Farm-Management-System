@@ -2,7 +2,7 @@ spring:
   application:
     name: dfms-api
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/dfms}
+    url: ${DB_URL:jdbc:postgresql://localhost:5433/dfms}
     username: ${DB_USER:dfms}
     password: ${DB_PASSWORD:dfms}
   jpa:
