@@ -68,4 +68,10 @@ public class CustomerController {
             @Valid @RequestBody CreateCustomerLoginRequest req) {
         return ResponseEntity.status(201).body(customerService.createLogin(id, req));
     }
+
+    @PostMapping("/{id}/reactivate")
+    @PreAuthorize("hasRole('OWNER')")
+    public CustomerResponse reactivate(@PathVariable UUID id) {
+        return customerService.reactivate(id);
+    }
 }

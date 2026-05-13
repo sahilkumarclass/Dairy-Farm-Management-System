@@ -38,6 +38,11 @@ export async function deleteCustomer(id: string) {
   await api.delete(`/api/customers/${id}`);
 }
 
+export async function reactivateCustomer(id: string) {
+  const { data } = await api.post<Customer>(`/api/customers/${id}/reactivate`);
+  return data;
+}
+
 export async function createCustomerLogin(id: string, input: CreateCustomerLoginInput) {
   const { data } = await api.post<Customer>(`/api/customers/${id}/login`, input);
   return data;

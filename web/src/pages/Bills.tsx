@@ -218,8 +218,13 @@ function PaymentDialog({ open, onOpenChange, bill, onSubmit, submitting }: Payme
             <Input id="pay-date" type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="ref">Reference</Label>
-            <Input id="ref" value={reference} onChange={(e) => setReference(e.target.value)} placeholder="UPI ref / txn id" />
+            <Label htmlFor="ref">Reference ID (optional)</Label>
+            <Input
+              id="ref"
+              value={reference}
+              onChange={(e) => setReference(e.target.value)}
+              placeholder="UPI ref / txn id — leave blank if none"
+            />
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>

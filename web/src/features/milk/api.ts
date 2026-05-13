@@ -27,6 +27,11 @@ export async function createMilkEntry(input: MilkEntryInput) {
   return data;
 }
 
+export async function updateMilkEntry(id: string, input: MilkEntryInput) {
+  const { data } = await api.put<MilkEntry>(`/api/milk-entries/${id}`, input);
+  return data;
+}
+
 export async function deleteMilkEntry(id: string) {
   await api.delete(`/api/milk-entries/${id}`);
 }

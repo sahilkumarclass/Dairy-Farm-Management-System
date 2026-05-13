@@ -70,6 +70,13 @@ public class CustomerService {
     }
 
     @Transactional
+    public CustomerResponse reactivate(UUID id) {
+        Customer c = load(id);
+        c.setStatus(CustomerStatus.ACTIVE);
+        return CustomerResponse.from(c);
+    }
+
+    @Transactional
     public CustomerResponse createLogin(UUID customerId, CreateCustomerLoginRequest req) {
         Customer customer = load(customerId);
         if (customer.getUser() != null) {

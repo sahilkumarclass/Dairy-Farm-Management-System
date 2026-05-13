@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { KeyRound, Plus, Search } from "lucide-react";
+import { KeyRound, PlayCircle, Plus, Search, StopCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -15,27 +15,38 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
   createCustomer,
   createCustomerLogin,
+  deleteCustomer,
   listCustomers,
+  reactivateCustomer,
   type CreateCustomerLoginInput,
   type CustomerInput,
 } from "@/features/customers/api";
 import { extractErrorMessage } from "@/lib/api";
-import { formatCurrency } from "@/lib/utils";
-import type { Customer } from "@/types/api";
+import { cn, formatCurrency } from "@/lib/utils";
+import type { Customer, CustomerStatus } from "@/types/api";
+
+type StatusFilter = CustomerStatus | "ALL";
 
 export function CustomersPage() {
   const qc = useQueryClient();
   const [q, setQ] = useState("");
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("ACTIVE");
   const [open, setOpen] = useState(false);
   const [loginTarget, setLoginTarget] = useState<Customer | null>(null);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["customers", q],
-    queryFn: () => listCustomers({ q: q || undefined, size: 50 }),
+    queryKey: ["customers", q, statusFilter],
+    queryFn: () =>
+      listCustomers({
+        q: q || undefined,
+        status: statusFilter === "ALL" ? undefined : statusFilter,
+        size: 50,
+      }),
   });
 
   const createMut = useMutation({
@@ -58,6 +69,30 @@ export function CustomersPage() {
     onError: (e) => toast.error(extractErrorMessage(e)),
   });
 
+  const stopMut = useMutation({
+    mutationFn: deleteCustomer,
+    onSuccess: () => {
+      toast.success("Service stopped");
+      qc.invalidateQueries({ queryKey: ["customers"] });
+    },
+    onError: (e) => toast.error(extractErrorMessage(e)),
+  });
+
+  const reactivateMut = useMutation({
+    mutationFn: reactivateCustomer,
+    onSuccess: () => {
+      toast.success("Customer reactivated");
+      qc.invalidateQueries({ queryKey: ["customers"] });
+    },
+    onError: (e) => toast.error(extractErrorMessage(e)),
+  });
+
+  function confirmStop(c: Customer) {
+    if (window.confirm(`Stop service for ${c.name}? They'll be marked inactive but their history is kept.`)) {
+      stopMut.mutate(c.id);
+    }
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-end justify-between">
@@ -70,14 +105,27 @@ export function CustomersPage() {
         </Button>
       </div>
 
-      <div className="relative max-w-sm">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          placeholder="Search name or phone"
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          className="pl-9"
-        />
+      <div className="flex flex-wrap items-end gap-3">
+        <div className="relative max-w-sm flex-1">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder="Search name or phone"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            className="pl-9"
+          />
+        </div>
+        <div className="w-40">
+          <Label className="mb-1 block text-xs text-muted-foreground">Show</Label>
+          <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as StatusFilter)}>
+            <SelectTrigger><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="ACTIVE">Active only</SelectItem>
+              <SelectItem value="INACTIVE">Inactive only</SelectItem>
+              <SelectItem value="ALL">All</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       <Card>
@@ -90,7 +138,7 @@ export function CustomersPage() {
                 <TableHead>Address</TableHead>
                 <TableHead>Custom Rate</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead className="text-right">Portal</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -101,25 +149,51 @@ export function CustomersPage() {
               )}
               {data?.content.length === 0 && !isLoading && (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center text-muted-foreground">No customers yet</TableCell>
+                  <TableCell colSpan={6} className="text-center text-muted-foreground">No customers match</TableCell>
                 </TableRow>
               )}
-              {data?.content.map((c: Customer) => (
-                <TableRow key={c.id}>
-                  <TableCell className="font-medium">{c.name}</TableCell>
-                  <TableCell>{c.phone}</TableCell>
-                  <TableCell className="text-muted-foreground">{c.address ?? "—"}</TableCell>
-                  <TableCell>{c.customMilkRate ? formatCurrency(c.customMilkRate) : "—"}</TableCell>
-                  <TableCell>
-                    <Badge variant={c.status === "ACTIVE" ? "success" : "outline"}>{c.status}</Badge>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Button size="sm" variant="outline" className="gap-1" onClick={() => setLoginTarget(c)}>
-                      <KeyRound className="h-3.5 w-3.5" /> Create login
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {data?.content.map((c: Customer) => {
+                const inactive = c.status === "INACTIVE";
+                return (
+                  <TableRow key={c.id} className={cn(inactive && "opacity-60")}>
+                    <TableCell className="font-medium">{c.name}</TableCell>
+                    <TableCell>{c.phone}</TableCell>
+                    <TableCell className="text-muted-foreground">{c.address ?? "—"}</TableCell>
+                    <TableCell>{c.customMilkRate ? formatCurrency(c.customMilkRate) : "—"}</TableCell>
+                    <TableCell>
+                      <Badge variant={inactive ? "outline" : "success"}>{c.status}</Badge>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-2">
+                        <Button size="sm" variant="outline" className="gap-1" onClick={() => setLoginTarget(c)}>
+                          <KeyRound className="h-3.5 w-3.5" /> Create login
+                        </Button>
+                        {inactive ? (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="gap-1"
+                            onClick={() => reactivateMut.mutate(c.id)}
+                            disabled={reactivateMut.isPending}
+                          >
+                            <PlayCircle className="h-3.5 w-3.5" /> Reactivate
+                          </Button>
+                        ) : (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="gap-1 text-destructive hover:bg-destructive/10"
+                            onClick={() => confirmStop(c)}
+                            disabled={stopMut.isPending}
+                          >
+                            <StopCircle className="h-3.5 w-3.5" /> Stop service
+                          </Button>
+                        )}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </CardContent>
@@ -226,7 +300,7 @@ function CustomerLoginDialog({ open, onOpenChange, customer, onSubmit, submittin
           <DialogTitle>Create portal login</DialogTitle>
           {customer && (
             <DialogDescription>
-              Issue portal credentials for <strong>{customer.name}</strong>. They'll be able to log in at the same login screen and land on the customer portal.
+              Issue portal credentials for <strong>{customer.name}</strong>. They'll be able to log in at the customer portal app.
             </DialogDescription>
           )}
         </DialogHeader>

@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Plus } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,13 +16,22 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { listCustomers } from "@/features/customers/api";
-import { createMilkEntry, listMilkEntries, type MilkEntryInput } from "@/features/milk/api";
+import {
+  createMilkEntry,
+  deleteMilkEntry,
+  listMilkEntries,
+  updateMilkEntry,
+  type MilkEntryInput,
+} from "@/features/milk/api";
 import { extractErrorMessage } from "@/lib/api";
 import { formatCurrency, formatDate, formatLiters } from "@/lib/utils";
+import type { MilkEntry } from "@/types/api";
+
+type Editing = MilkEntry | "new" | null;
 
 export function MilkEntriesPage() {
   const qc = useQueryClient();
-  const [open, setOpen] = useState(false);
+  const [editing, setEditing] = useState<Editing>(null);
 
   const { data, isLoading } = useQuery({
     queryKey: ["milk-entries"],
@@ -34,25 +43,63 @@ export function MilkEntriesPage() {
     queryFn: () => listCustomers({ status: "ACTIVE", size: 200 }),
   });
 
+  const invalidate = () => {
+    qc.invalidateQueries({ queryKey: ["milk-entries"] });
+    qc.invalidateQueries({ queryKey: ["dashboard-summary"] });
+  };
+
   const createMut = useMutation({
     mutationFn: createMilkEntry,
     onSuccess: () => {
       toast.success("Milk entry logged");
-      qc.invalidateQueries({ queryKey: ["milk-entries"] });
-      qc.invalidateQueries({ queryKey: ["dashboard-summary"] });
-      setOpen(false);
+      invalidate();
+      setEditing(null);
     },
     onError: (e) => toast.error(extractErrorMessage(e)),
   });
+
+  const updateMut = useMutation({
+    mutationFn: ({ id, input }: { id: string; input: MilkEntryInput }) => updateMilkEntry(id, input),
+    onSuccess: () => {
+      toast.success("Milk entry updated");
+      invalidate();
+      setEditing(null);
+    },
+    onError: (e) => toast.error(extractErrorMessage(e)),
+  });
+
+  const deleteMut = useMutation({
+    mutationFn: deleteMilkEntry,
+    onSuccess: () => {
+      toast.success("Milk entry deleted");
+      invalidate();
+    },
+    onError: (e) => toast.error(extractErrorMessage(e)),
+  });
+
+  function handleSubmit(values: MilkEntryInput) {
+    if (editing && editing !== "new") {
+      updateMut.mutate({ id: editing.id, input: values });
+    } else {
+      createMut.mutate(values);
+    }
+  }
+
+  function handleDelete(e: React.MouseEvent, m: MilkEntry) {
+    e.stopPropagation();
+    if (window.confirm(`Delete milk entry for ${m.customerName} on ${formatDate(m.entryDate)}?`)) {
+      deleteMut.mutate(m.id);
+    }
+  }
 
   return (
     <div className="space-y-6">
       <div className="flex items-end justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Milk Entries</h1>
-          <p className="text-sm text-muted-foreground">Log each customer's milk pickup</p>
+          <p className="text-sm text-muted-foreground">Click any row to edit. Use the trash icon to delete.</p>
         </div>
-        <Button onClick={() => setOpen(true)} className="gap-2">
+        <Button onClick={() => setEditing("new")} className="gap-2">
           <Plus className="h-4 w-4" /> New Entry
         </Button>
       </div>
@@ -69,25 +116,26 @@ export function MilkEntriesPage() {
                 <TableHead>Liters</TableHead>
                 <TableHead>Rate</TableHead>
                 <TableHead>Total</TableHead>
+                <TableHead className="w-12"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {isLoading && (
                 <TableRow>
-                  <TableCell colSpan={7} className="text-center text-muted-foreground">
-                    Loading…
-                  </TableCell>
+                  <TableCell colSpan={8} className="text-center text-muted-foreground">Loading…</TableCell>
                 </TableRow>
               )}
               {data?.content.length === 0 && !isLoading && (
                 <TableRow>
-                  <TableCell colSpan={7} className="text-center text-muted-foreground">
-                    No entries yet
-                  </TableCell>
+                  <TableCell colSpan={8} className="text-center text-muted-foreground">No entries yet</TableCell>
                 </TableRow>
               )}
               {data?.content.map((m) => (
-                <TableRow key={m.id}>
+                <TableRow
+                  key={m.id}
+                  onClick={() => setEditing(m)}
+                  className="cursor-pointer"
+                >
                   <TableCell>{formatDate(m.entryDate)}</TableCell>
                   <TableCell className="font-medium">{m.customerName}</TableCell>
                   <TableCell>{m.session}</TableCell>
@@ -95,6 +143,17 @@ export function MilkEntriesPage() {
                   <TableCell>{formatLiters(m.quantityLiters)}</TableCell>
                   <TableCell>{formatCurrency(m.ratePerLiter)}</TableCell>
                   <TableCell className="font-semibold">{formatCurrency(m.totalAmount)}</TableCell>
+                  <TableCell className="text-right">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => handleDelete(e, m)}
+                      className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                      aria-label="Delete entry"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -103,31 +162,53 @@ export function MilkEntriesPage() {
       </Card>
 
       <MilkEntryDialog
-        open={open}
-        onOpenChange={setOpen}
+        editing={editing}
+        onOpenChange={(v) => !v && setEditing(null)}
         customers={customers.data?.content ?? []}
-        onSubmit={(v) => createMut.mutate(v)}
-        submitting={createMut.isPending}
+        onSubmit={handleSubmit}
+        submitting={createMut.isPending || updateMut.isPending}
       />
     </div>
   );
 }
 
 interface DialogProps {
-  open: boolean;
+  editing: Editing;
   onOpenChange: (v: boolean) => void;
   customers: { id: string; name: string }[];
   onSubmit: (v: MilkEntryInput) => void;
   submitting: boolean;
 }
 
-function MilkEntryDialog({ open, onOpenChange, customers, onSubmit, submitting }: DialogProps) {
+function MilkEntryDialog({ editing, onOpenChange, customers, onSubmit, submitting }: DialogProps) {
+  const isEdit = editing !== null && editing !== "new";
+  const initial = isEdit ? (editing as MilkEntry) : null;
+
   const [customerId, setCustomerId] = useState("");
   const [milkType, setMilkType] = useState<MilkEntryInput["milkType"]>("COW");
   const [session, setSession] = useState<MilkEntryInput["session"]>("MORNING");
   const [quantity, setQuantity] = useState("");
   const [rate, setRate] = useState("");
   const [entryDate, setEntryDate] = useState(new Date().toISOString().slice(0, 10));
+
+  // Seed form whenever the dialog target changes
+  useEffect(() => {
+    if (initial) {
+      setCustomerId(initial.customerId);
+      setMilkType(initial.milkType);
+      setSession(initial.session);
+      setQuantity(initial.quantityLiters);
+      setRate(initial.ratePerLiter);
+      setEntryDate(initial.entryDate);
+    } else if (editing === "new") {
+      setCustomerId("");
+      setMilkType("COW");
+      setSession("MORNING");
+      setQuantity("");
+      setRate("");
+      setEntryDate(new Date().toISOString().slice(0, 10));
+    }
+  }, [editing, initial]);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -147,10 +228,10 @@ function MilkEntryDialog({ open, onOpenChange, customers, onSubmit, submitting }
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={editing !== null} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>New milk entry</DialogTitle>
+          <DialogTitle>{isEdit ? "Edit milk entry" : "New milk entry"}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
@@ -205,7 +286,7 @@ function MilkEntryDialog({ open, onOpenChange, customers, onSubmit, submitting }
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
-            <Button type="submit" disabled={submitting}>{submitting ? "Saving…" : "Save"}</Button>
+            <Button type="submit" disabled={submitting}>{submitting ? "Saving…" : isEdit ? "Update" : "Save"}</Button>
           </DialogFooter>
         </form>
       </DialogContent>
