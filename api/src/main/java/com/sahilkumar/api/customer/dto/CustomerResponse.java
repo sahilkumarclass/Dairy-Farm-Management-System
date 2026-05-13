@@ -3,7 +3,7 @@ package com.sahilkumar.api.customer.dto;
 import com.sahilkumar.api.customer.Customer;
 import com.sahilkumar.api.customer.CustomerStatus;
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 public record CustomerResponse(
@@ -13,7 +13,7 @@ public record CustomerResponse(
         String address,
         BigDecimal customMilkRate,
         CustomerStatus status,
-        OffsetDateTime createdAt
+        Instant createdAt
 ) {
     public static CustomerResponse from(Customer c) {
         return new CustomerResponse(

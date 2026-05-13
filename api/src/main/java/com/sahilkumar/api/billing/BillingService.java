@@ -12,8 +12,8 @@ import com.sahilkumar.api.milk.MilkEntry;
 import com.sahilkumar.api.milk.MilkEntryRepository;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.Instant;
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +83,7 @@ public class BillingService {
                             .periodYear(year)
                             .periodMonth(month)
                             .paidAmount(BigDecimal.ZERO)
-                            .generatedAt(OffsetDateTime.now())
+                            .generatedAt(Instant.now())
                             .build());
 
             bill.setTotalLiters(totalLiters);

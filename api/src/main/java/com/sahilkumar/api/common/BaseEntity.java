@@ -6,7 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Version;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,11 +27,11 @@ public abstract class BaseEntity {
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
-    private OffsetDateTime createdAt;
+    private Instant createdAt;
 
     @LastModifiedDate
     @Column(name = "updated_at", nullable = false)
-    private OffsetDateTime updatedAt;
+    private Instant updatedAt;
 
     @Version
     @Column(nullable = false)

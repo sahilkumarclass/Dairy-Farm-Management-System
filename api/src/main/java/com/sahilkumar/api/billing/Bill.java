@@ -12,7 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -57,5 +57,5 @@ public class Bill extends BaseEntity {
     private BillStatus status;
 
     @Column(name = "generated_at", nullable = false)
-    private OffsetDateTime generatedAt;
+    private Instant generatedAt;
 }

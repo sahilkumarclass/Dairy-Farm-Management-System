@@ -1,10 +1,10 @@
 package com.sahilkumar.api.common.exception;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.List;
 
 public record ApiError(
-        OffsetDateTime timestamp,
+        Instant timestamp,
         int status,
         String error,
         String message,

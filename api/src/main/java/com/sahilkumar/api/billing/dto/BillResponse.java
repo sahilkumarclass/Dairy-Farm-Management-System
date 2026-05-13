@@ -3,7 +3,7 @@ package com.sahilkumar.api.billing.dto;
 import com.sahilkumar.api.billing.Bill;
 import com.sahilkumar.api.billing.BillStatus;
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 public record BillResponse(
@@ -17,7 +17,7 @@ public record BillResponse(
         BigDecimal paidAmount,
         BigDecimal remainingAmount,
         BillStatus status,
-        OffsetDateTime generatedAt
+        Instant generatedAt
 ) {
     public static BillResponse from(Bill b) {
         return new BillResponse(

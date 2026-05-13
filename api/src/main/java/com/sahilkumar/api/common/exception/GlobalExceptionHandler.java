@@ -1,7 +1,7 @@
 package com.sahilkumar.api.common.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -53,7 +53,7 @@ public class GlobalExceptionHandler {
     private ResponseEntity<ApiError> build(HttpStatus status, String message, HttpServletRequest req,
                                            List<ApiError.FieldViolation> violations) {
         return ResponseEntity.status(status).body(new ApiError(
-                OffsetDateTime.now(),
+                Instant.now(),
                 status.value(),
                 status.getReasonPhrase(),
                 message,
