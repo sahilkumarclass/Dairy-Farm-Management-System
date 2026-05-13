@@ -13,19 +13,21 @@ Phase 1 MVP: Spring Boot 3 + React 18 (TypeScript) + PostgreSQL.
 | Billing (monthly generation, payments, status) | ✅ |
 | Dashboard (today / month KPIs) | ✅ |
 | Herd Register — cow CRUD, per-cow milk production, vet/vaccination log with cost | ✅ |
-| Customer Portal — `/portal/*` for CUSTOMER role: own dashboard, milk history, bills | ✅ |
+| Customer Portal — **separate React app** (`customer-web/`) for CUSTOMER role: own dashboard, milk history, bills | ✅ |
 
 Still pending from the architecture doc: WhatsApp/SMS notifications, file uploads, milk-stock aggregation, multi-farm support.
 
 ## Customer portal access
 
-The customer panel is gated to the `CUSTOMER` role. To give a customer a login:
+The customer portal is a **separate frontend app** at `customer-web/` (port `5174`). It only accepts the `CUSTOMER` role; OWNER/STAFF accounts are bounced with a toast. The admin app (`web/`, port `5173`) does the inverse — customers are rejected and told to use the portal URL. Both apps share the same Spring Boot API.
 
-1. As an OWNER, open **Customers**.
+To give a customer access:
+
+1. As an OWNER, open **Customers** in the admin app.
 2. Click **Create login** on a row, set a username/password.
-3. The customer signs in at the same `/login` and is auto-routed to `/portal/dashboard`.
+3. Share the portal URL (`http://localhost:5174` in dev) — the customer signs in there and lands on their dashboard.
 
-Behind the scenes this hits `POST /api/customers/{id}/login` — it creates a `User` with role `CUSTOMER` and links it 1:1 to the existing `Customer` row (unique index `uq_customers_user`).
+Behind the scenes this hits `POST /api/customers/{id}/login`, which creates a `User` with role `CUSTOMER` and links it 1:1 to the existing `Customer` row (unique index `uq_customers_user`). The portal calls `/api/me/*` endpoints (`CustomerSelfController`) that are role-scoped to the signed-in customer.
 
 ## Herd register
 
@@ -37,8 +39,9 @@ Behind the scenes this hits `POST /api/customers/{id}/login` — it creates a `U
 ## Repo layout
 
 ```
-api/   Spring Boot backend (Java 21, Maven)
-web/   React + Vite + TypeScript frontend
+api/           Spring Boot backend (Java 21, Maven)
+web/           Admin app — React + Vite + TypeScript (port 5173)
+customer-web/  Customer portal app — React + Vite + TypeScript (port 5174)
 docker-compose.yml   Postgres
 ```
 
@@ -58,13 +61,19 @@ docker compose up -d
 cd api
 ./mvnw spring-boot:run
 
-# 3. Frontend (port 5173) — in another shell
+# 3. Admin app (port 5173) — in another shell
 cd web
+npm install
+npm run dev
+
+# 4. Customer portal (port 5174) — in another shell
+cd customer-web
 npm install
 npm run dev
 ```
 
-Open http://localhost:5173 and sign in with **admin / admin123** (seeded in `V1__init_schema.sql`).
+- Admin app at http://localhost:5173 — sign in with **admin / admin123** (seeded in `V1__init_schema.sql`).
+- Customer portal at http://localhost:5174 — sign in with a customer login created from the admin app's Customers screen.
 
 API docs: http://localhost:8080/swagger-ui.html
 
@@ -77,7 +86,7 @@ Backend config comes from `api/src/main/resources/application.yml` and env vars 
 | `DB_URL` | `jdbc:postgresql://localhost:5432/dfms` | Postgres JDBC URL |
 | `DB_USER` / `DB_PASSWORD` | `dfms` / `dfms` | DB credentials |
 | `JWT_SECRET` | (placeholder) | **Replace** in production. Min 32 bytes for HS256. |
-| `CORS_ORIGINS` | `http://localhost:5173` | Comma-separated allowed origins |
+| `CORS_ORIGINS` | `http://localhost:5173,http://localhost:5174` | Comma-separated allowed origins (admin + customer apps) |
 
 Frontend reads `VITE_API_BASE_URL` (defaults to `http://localhost:8080`).
 

@@ -11,7 +11,7 @@ const STATUS_VARIANT: Record<BillStatus, "success" | "warning" | "destructive"> 
   UNPAID: "destructive",
 };
 
-export function PortalDashboard() {
+export function DashboardPage() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["portal-dashboard"],
     queryFn: getMyDashboard,

@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { getMyMilkEntries } from "@/features/portal/api";
 import { formatCurrency, formatDate, formatLiters } from "@/lib/utils";
 
-export function PortalMilk() {
+export function MilkPage() {
   const { data, isLoading } = useQuery({
     queryKey: ["portal-milk"],
     queryFn: () => getMyMilkEntries({ size: 100 }),

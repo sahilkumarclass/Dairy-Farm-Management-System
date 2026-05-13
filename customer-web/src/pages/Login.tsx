@@ -13,7 +13,7 @@ import { extractErrorMessage } from "@/lib/api";
 export function LoginPage() {
   const navigate = useNavigate();
   const setSession = useAuthStore((s) => s.setSession);
-  const [username, setUsername] = useState("admin");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
@@ -23,8 +23,8 @@ export function LoginPage() {
     try {
       const auth = await login(username, password);
       if (!auth.accessToken) throw new Error("No token returned");
-      if (auth.role === "CUSTOMER") {
-        toast.error("Customers should sign in at the customer portal (http://localhost:5174).");
+      if (auth.role !== "CUSTOMER") {
+        toast.error("This portal is only for customers. Please use the admin app at http://localhost:5173.");
         return;
       }
       setSession(auth.accessToken, {
@@ -49,8 +49,8 @@ export function LoginPage() {
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-secondary/15 text-secondary">
             <Sprout className="h-6 w-6" />
           </div>
-          <CardTitle className="text-2xl">DairySmart Pro</CardTitle>
-          <CardDescription>Sign in to manage your dairy operation</CardDescription>
+          <CardTitle className="text-2xl">DairySmart</CardTitle>
+          <CardDescription>Sign in to view your milk history and bills</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">

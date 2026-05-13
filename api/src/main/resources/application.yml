@@ -33,7 +33,7 @@ app:
       refresh-token-ttl: P7D
       issuer: dfms-api
   cors:
-    allowed-origins: ${CORS_ORIGINS:http://localhost:5173}
+    allowed-origins: ${CORS_ORIGINS:http://localhost:5173,http://localhost:5174}
 
 springdoc:
   swagger-ui:

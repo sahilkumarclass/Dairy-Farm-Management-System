@@ -17,7 +17,7 @@ const STATUS_VARIANT: Record<BillStatus, "success" | "warning" | "destructive"> 
   UNPAID: "destructive",
 };
 
-export function PortalBills() {
+export function BillsPage() {
   const { data, isLoading } = useQuery({ queryKey: ["portal-bills"], queryFn: getMyBills });
 
   return (

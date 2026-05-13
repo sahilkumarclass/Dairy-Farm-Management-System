@@ -5,9 +5,9 @@ import { useAuthStore } from "@/stores/auth";
 import { cn } from "@/lib/utils";
 
 const nav = [
-  { to: "/portal/dashboard", label: "Overview" },
-  { to: "/portal/milk", label: "Milk history" },
-  { to: "/portal/bills", label: "Bills" },
+  { to: "/dashboard", label: "Overview" },
+  { to: "/milk", label: "Milk history" },
+  { to: "/bills", label: "Bills" },
 ];
 
 export function PortalShell() {
@@ -25,7 +25,7 @@ export function PortalShell() {
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
             <Sprout className="h-6 w-6 text-secondary" />
-            <span className="text-lg font-semibold">DairySmart · Customer Portal</span>
+            <span className="text-lg font-semibold">DairySmart</span>
           </div>
           <div className="flex items-center gap-3">
             <span className="text-sm text-muted-foreground">Hi, {user?.fullName ?? user?.username}</span>
