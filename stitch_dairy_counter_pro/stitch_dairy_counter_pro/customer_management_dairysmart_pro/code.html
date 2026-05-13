@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Customer Directory Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary-fixed": "#ffdbcb",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#b6c4ff",
+                        "primary-container": "#1e3a8a",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#90a8ff",
+                        "secondary-fixed-dim": "#4ae176",
+                        "surface-tint": "#4059aa",
+                        "on-secondary-fixed": "#002109",
+                        "surface-dim": "#d9dadc",
+                        "surface": "#f8f9fb",
+                        "surface-bright": "#f8f9fb",
+                        "surface-container-low": "#f3f4f6",
+                        "on-secondary-fixed-variant": "#005321",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#f39461",
+                        "outline-variant": "#c5c5d3",
+                        "surface-container-highest": "#e1e2e4",
+                        "primary-fixed": "#dce1ff",
+                        "tertiary": "#4b1c00",
+                        "secondary": "#006e2f",
+                        "secondary-fixed": "#6bff8f",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#6bff8f",
+                        "outline": "#757682",
+                        "primary": "#00236f",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#444651",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#f0f1f3",
+                        "tertiary-container": "#6e2c00",
+                        "on-tertiary-fixed": "#341100",
+                        "on-background": "#191c1e",
+                        "surface-container": "#edeef0",
+                        "on-secondary-container": "#007432",
+                        "on-primary-fixed-variant": "#264191",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#e1e2e4",
+                        "inverse-surface": "#2e3132",
+                        "surface-container-high": "#e7e8ea",
+                        "on-tertiary": "#ffffff",
+                        "background": "#f8f9fb",
+                        "primary-fixed-dim": "#b6c4ff",
+                        "on-primary-fixed": "#00164e",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "on-tertiary-fixed-variant": "#773205",
+                        "on-surface": "#191c1e"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "margin-desktop": "48px",
+                        "unit": "4px",
+                        "margin-mobile": "16px",
+                        "sm": "8px",
+                        "gutter": "16px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "lg": "24px",
+                        "xs": "4px"
+                    },
+                    fontFamily: {
+                        "label-lg": ["Noto Sans Devanagari", "sans-serif"],
+                        "body-lg": ["Inter", "sans-serif"],
+                        "headline-md": ["Inter", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"],
+                        "data-metric": ["Inter", "sans-serif"],
+                        "label-sm": ["Noto Sans Devanagari", "sans-serif"],
+                        "display-lg": ["Inter", "sans-serif"],
+                        "headline-sm": ["Inter", "sans-serif"]
+                    },
+                    fontSize: {
+                        "label-lg": ["16px", { lineHeight: "20px", fontWeight: "500" }],
+                        "body-lg": ["18px", { lineHeight: "26px", fontWeight: "400" }],
+                        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "data-metric": ["28px", { lineHeight: "32px", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "label-sm": ["12px", { lineHeight: "16px", fontWeight: "500" }],
+                        "display-lg": ["32px", { lineHeight: "40px", fontWeight: "700" }],
+                        "headline-sm": ["20px", { lineHeight: "28px", fontWeight: "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen font-body-md antialiased flex">
+<!-- SideNavBar (Desktop) -->
+<nav class="hidden md:flex flex-col py-lg space-y-sm bg-surface-container-low dark:bg-inverse-surface border-r border-outline-variant docked left-0 h-full w-64 flex-shrink-0 z-40 fixed">
+<div class="px-md mb-lg">
+<div class="flex items-center gap-sm">
+<img alt="Farm Logo" class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="A small, stylized circular logo showing a green valley and a milk bottle icon, representing a modern dairy farm." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAd4HNjEMULmEyLGJK38C6YycWSWS1cYuwSPOdLkLMyfRThfHWliEl4Yc2GvBiv3vT-1_2k_uvxBp0tW0ONlDyp-OKzLNwGoaxEK0-S-se2zYnAlrqyUaeEmVZwDe-1GopjVcS9U0d9PoblEw-DN38AezcH_nQdNqFHgZvl-MmGvBfW_nK822K5JRF7LlJ1IOk5tNDzz1bIcQXTt7nRcdkyCTql6UIo4meT-hWCrT71VN5YXhPmU4UnzZCftR2uj6dhhKLFbDT0tdM"/>
+<div>
+<h2 class="text-headline-sm font-headline-sm text-primary dark:text-inverse-primary truncate">Green Valley Dairy</h2>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Owner Portal</p>
+</div>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto space-y-unit">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest transition-all text-label-lg font-label-lg mx-sm rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest transition-all text-label-lg font-label-lg mx-sm rounded-lg" href="#">
+<span class="material-symbols-outlined">point_of_sale</span>
+                Counter Sales
+            </a>
+<a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container rounded-r-full font-bold transition-transform translate-x-1 text-label-lg font-label-lg" href="#">
+<span class="material-symbols-outlined">group</span>
+                Customers
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest transition-all text-label-lg font-label-lg mx-sm rounded-lg" href="#">
+<span class="material-symbols-outlined">water_drop</span>
+                Milk Stock
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest transition-all text-label-lg font-label-lg mx-sm rounded-lg" href="#">
+<span class="material-symbols-outlined">payments</span>
+                Expenses
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest transition-all text-label-lg font-label-lg mx-sm rounded-lg" href="#">
+<span class="material-symbols-outlined">pest_control_rodent</span>
+                Herd Register
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest transition-all text-label-lg font-label-lg mx-sm rounded-lg" href="#">
+<span class="material-symbols-outlined">assessment</span>
+                Reports
+            </a>
+</div>
+<div class="px-md py-sm">
+<button class="w-full flex items-center justify-center gap-sm bg-primary text-on-primary py-sm rounded-lg text-label-lg font-label-lg min-h-[48px] hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined">qr_code_scanner</span>
+                Quick Scan
+            </button>
+</div>
+<div class="mt-auto space-y-unit border-t border-outline-variant pt-sm">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest transition-all text-label-lg font-label-lg mx-sm rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+                Settings
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest transition-all text-label-lg font-label-lg mx-sm rounded-lg" href="#">
+<span class="material-symbols-outlined">help</span>
+                Help
+            </a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col md:ml-64 w-full">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-inverse-surface border-b border-outline-variant docked full-width top-0 z-30 sticky flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop h-16">
+<div class="flex items-center gap-md">
+<span class="text-headline-md font-headline-md font-bold text-primary dark:text-inverse-primary md:hidden">DairySmart Pro</span>
+<!-- Search Bar (Desktop Right) -->
+<div class="hidden md:flex relative ml-xl w-64 lg:w-96">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-xl pr-sm py-sm bg-surface-container-low border-b-2 border-outline focus:border-primary bg-transparent text-body-md font-body-md outline-none transition-colors rounded-t-sm" placeholder="Search customers..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<button class="p-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-low transition-colors rounded-full active:opacity-80 active:scale-95">
+<span class="material-symbols-outlined">translate</span>
+</button>
+<button class="p-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-low transition-colors rounded-full active:opacity-80 active:scale-95 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="p-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-low transition-colors rounded-full active:opacity-80 active:scale-95">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Page Content -->
+<main class="flex-1 p-margin-mobile md:p-margin-desktop overflow-y-auto">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-lg gap-md">
+<div>
+<h1 class="text-display-lg font-display-lg text-primary">Customer Directory</h1>
+<p class="text-body-lg font-body-lg text-on-surface-variant">Manage accounts, pricing, and billing / ग्राहक निर्देशिका</p>
+</div>
+<button class="flex items-center gap-sm bg-primary text-on-primary px-lg py-sm rounded-lg text-label-lg font-label-lg min-h-[48px] shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap">
+<span class="material-symbols-outlined">person_add</span>
+                    Add New Customer / नया ग्राहक
+                </button>
+</div>
+<!-- Mobile Search (Visible only on mobile) -->
+<div class="md:hidden mb-lg relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-xl pr-sm py-md bg-surface-container-low border-b-2 border-outline focus:border-primary text-body-md font-body-md outline-none transition-colors rounded-t-sm" placeholder="Search customers..." type="text"/>
+</div>
+<!-- Bento Grid Layout for Customers -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+<!-- Customer List (Left Column) -->
+<div class="lg:col-span-4 flex flex-col gap-sm">
+<!-- Active Customer Item -->
+<div class="bg-surface-container-lowest border-l-4 border-primary rounded-lg p-md cursor-pointer hover:bg-surface-container-low transition-colors shadow-sm relative overflow-hidden group">
+<div class="absolute inset-0 bg-primary opacity-5 pointer-events-none"></div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Rajesh Kumar</h3>
+<p class="text-label-sm font-label-sm text-on-surface-variant">CID: 1042 • Route A</p>
+</div>
+<span class="bg-secondary-container text-on-secondary-container px-sm py-xs rounded-full text-label-sm font-label-sm">Active</span>
+</div>
+<div class="mt-md flex justify-between items-end">
+<div>
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-xs">Pending Balance</p>
+<p class="text-body-lg font-body-lg font-bold text-error">₹ 1,250</p>
+</div>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">chevron_right</span>
+</div>
+</div>
+<!-- Customer Item -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md cursor-pointer hover:bg-surface-container-low transition-colors shadow-sm group">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Anita Sharma</h3>
+<p class="text-label-sm font-label-sm text-on-surface-variant">CID: 1045 • Route B</p>
+</div>
+<span class="bg-surface-variant text-on-surface-variant px-sm py-xs rounded-full text-label-sm font-label-sm">Inactive</span>
+</div>
+<div class="mt-md flex justify-between items-end">
+<div>
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-xs">Pending Balance</p>
+<p class="text-body-lg font-body-lg font-bold text-on-surface">₹ 0</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:translate-x-1 transition-transform">chevron_right</span>
+</div>
+</div>
+<!-- Customer Item -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md cursor-pointer hover:bg-surface-container-low transition-colors shadow-sm group">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Vikram Singh</h3>
+<p class="text-label-sm font-label-sm text-on-surface-variant">CID: 1051 • Route A</p>
+</div>
+<span class="bg-secondary-container text-on-secondary-container px-sm py-xs rounded-full text-label-sm font-label-sm">Active</span>
+</div>
+<div class="mt-md flex justify-between items-end">
+<div>
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-xs">Pending Balance</p>
+<p class="text-body-lg font-body-lg font-bold text-on-surface">₹ 450</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:translate-x-1 transition-transform">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Customer Details Panel (Right Column) -->
+<div class="lg:col-span-8 bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm flex flex-col">
+<!-- Profile Header -->
+<div class="p-lg border-b border-outline-variant bg-surface-bright rounded-t-xl flex justify-between items-start">
+<div class="flex gap-md items-center">
+<div class="w-16 h-16 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center text-headline-md font-headline-md">
+                                RK
+                            </div>
+<div>
+<h2 class="text-headline-md font-headline-md text-on-surface">Rajesh Kumar</h2>
+<p class="text-body-md font-body-md text-on-surface-variant">Since Jan 2022 • Route A</p>
+</div>
+</div>
+<div class="flex gap-sm">
+<button class="p-sm border border-outline-variant rounded-lg hover:bg-surface-container-low text-primary">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="p-sm border border-outline-variant rounded-lg hover:bg-surface-container-low text-primary">
+<span class="material-symbols-outlined">print</span>
+</button>
+</div>
+</div>
+<div class="p-lg grid grid-cols-1 md:grid-cols-2 gap-lg flex-1">
+<!-- Contact Info Card -->
+<div class="bg-surface-container-low rounded-lg p-md">
+<h3 class="text-label-lg font-label-lg text-on-surface mb-md border-b border-outline-variant pb-sm">Contact Details / संपर्क विवरण</h3>
+<div class="space-y-md">
+<div class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-outline mt-1">call</span>
+<div>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Phone Number</p>
+<p class="text-body-md font-body-md text-on-surface">+91 98765 43210</p>
+</div>
+</div>
+<div class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-outline mt-1">location_on</span>
+<div>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Delivery Address</p>
+<p class="text-body-md font-body-md text-on-surface">142 MG Road, Block C<br/>Near City Square</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Pricing Card -->
+<div class="bg-surface-container-low rounded-lg p-md">
+<div class="flex justify-between items-center border-b border-outline-variant pb-sm mb-md">
+<h3 class="text-label-lg font-label-lg text-on-surface">Milk Pricing / दूध की कीमत</h3>
+<button class="text-primary text-label-sm font-label-sm hover:underline">Edit</button>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<div class="bg-surface-container-lowest p-sm rounded border-b-2 border-primary">
+<p class="text-label-sm font-label-sm text-on-surface-variant">Cow Milk</p>
+<p class="text-data-metric font-data-metric text-on-surface">₹65<span class="text-body-md font-body-md font-normal">/L</span></p>
+</div>
+<div class="bg-surface-container-lowest p-sm rounded border-b-2 border-primary">
+<p class="text-label-sm font-label-sm text-on-surface-variant">Buffalo Milk</p>
+<p class="text-data-metric font-data-metric text-on-surface">₹80<span class="text-body-md font-body-md font-normal">/L</span></p>
+</div>
+</div>
+</div>
+<!-- Consumption History (Spans full width) -->
+<div class="md:col-span-2 bg-surface-container-low rounded-lg p-md">
+<div class="flex justify-between items-center mb-md">
+<h3 class="text-label-lg font-label-lg text-on-surface">Recent Consumption / हाल की खपत</h3>
+<a class="text-primary text-label-sm font-label-sm hover:underline" href="#">View All</a>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant text-label-sm font-label-sm text-on-surface-variant">
+<th class="py-sm px-xs font-medium">Date</th>
+<th class="py-sm px-xs font-medium">Type</th>
+<th class="py-sm px-xs font-medium text-right">Quantity</th>
+<th class="py-sm px-xs font-medium text-right">Amount</th>
+</tr>
+</thead>
+<tbody class="text-body-md font-body-md text-on-surface">
+<tr class="border-b border-outline-variant hover:bg-surface-container-lowest transition-colors">
+<td class="py-sm px-xs">24 Oct</td>
+<td class="py-sm px-xs">Buffalo</td>
+<td class="py-sm px-xs text-right">2.0 L</td>
+<td class="py-sm px-xs text-right">₹160</td>
+</tr>
+<tr class="border-b border-outline-variant hover:bg-surface-container-lowest transition-colors">
+<td class="py-sm px-xs">23 Oct</td>
+<td class="py-sm px-xs">Buffalo</td>
+<td class="py-sm px-xs text-right">2.0 L</td>
+<td class="py-sm px-xs text-right">₹160</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="py-sm px-xs">22 Oct</td>
+<td class="py-sm px-xs">Cow</td>
+<td class="py-sm px-xs text-right">1.5 L</td>
+<td class="py-sm px-xs text-right">₹97.5</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Action Footer -->
+<div class="p-md border-t border-outline-variant bg-surface-bright rounded-b-xl flex justify-end gap-md">
+<button class="px-lg py-sm border-2 border-primary text-primary rounded-lg text-label-lg font-label-lg min-h-[48px] hover:bg-surface-container-low transition-colors">
+                            Generate Bill
+                        </button>
+<button class="px-lg py-sm bg-primary text-on-primary rounded-lg text-label-lg font-label-lg min-h-[48px] hover:opacity-90 transition-opacity flex items-center gap-sm">
+<span class="material-symbols-outlined">payments</span>
+                            Receive Payment
+                        </button>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-safe h-20 md:hidden bg-surface dark:bg-inverse-surface border-t border-outline-variant shadow-lg docked full-width rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary w-16" href="#">
+<span class="material-symbols-outlined mb-1">home</span>
+<span class="text-label-sm font-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary w-16" href="#">
+<span class="material-symbols-outlined mb-1">shopping_basket</span>
+<span class="text-label-sm font-label-sm">Sales</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-2xl px-4 py-1 scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined mb-1">group</span>
+<span class="text-label-sm font-label-sm font-bold">Customers</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary w-16" href="#">
+<span class="material-symbols-outlined mb-1">receipt_long</span>
+<span class="text-label-sm font-label-sm">Bills</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary w-16" href="#">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="text-label-sm font-label-sm">Profile</span>
+</a>
+</nav>
+<!-- Contextual FAB (Mobile Only - Add Customer) -->
+<button class="md:hidden fixed bottom-24 right-margin-mobile w-14 h-14 bg-primary text-on-primary rounded-xl shadow-lg flex items-center justify-center hover:opacity-90 transition-opacity z-40">
+<span class="material-symbols-outlined text-display-lg">person_add</span>
+</button>
+</body></html>

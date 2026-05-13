@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DairySmart Pro - Herd Register</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Noto+Sans+Devanagari:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#93000a",
+                        "secondary": "#006e2f",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#90a8ff",
+                        "secondary-fixed": "#6bff8f",
+                        "surface-container-high": "#e7e8ea",
+                        "error-container": "#ffdad6",
+                        "primary-fixed": "#dce1ff",
+                        "on-secondary-fixed": "#002109",
+                        "tertiary-container": "#6e2c00",
+                        "inverse-surface": "#2e3132",
+                        "surface-container-lowest": "#ffffff",
+                        "outline": "#757682",
+                        "on-tertiary-fixed-variant": "#773205",
+                        "tertiary-fixed": "#ffdbcb",
+                        "on-tertiary-container": "#f39461",
+                        "on-primary-fixed-variant": "#264191",
+                        "tertiary": "#4b1c00",
+                        "on-surface-variant": "#444651",
+                        "on-error": "#ffffff",
+                        "primary-container": "#1e3a8a",
+                        "secondary-fixed-dim": "#4ae176",
+                        "outline-variant": "#c5c5d3",
+                        "on-surface": "#191c1e",
+                        "on-primary-fixed": "#00164e",
+                        "inverse-primary": "#b6c4ff",
+                        "background": "#f8f9fb",
+                        "on-secondary-container": "#007432",
+                        "on-tertiary": "#ffffff",
+                        "surface-tint": "#4059aa",
+                        "surface-container-low": "#f3f4f6",
+                        "secondary-container": "#6bff8f",
+                        "surface-container-highest": "#e1e2e4",
+                        "surface-dim": "#d9dadc",
+                        "inverse-on-surface": "#f0f1f3",
+                        "surface": "#f8f9fb",
+                        "primary-fixed-dim": "#b6c4ff",
+                        "on-secondary": "#ffffff",
+                        "surface-container": "#edeef0",
+                        "surface-variant": "#e1e2e4",
+                        "on-background": "#191c1e",
+                        "primary": "#00236f",
+                        "on-tertiary-fixed": "#341100",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "on-secondary-fixed-variant": "#005321",
+                        "surface-bright": "#f8f9fb",
+                        "error": "#ba1a1a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "lg": "24px",
+                        "unit": "4px",
+                        "gutter": "16px",
+                        "xs": "4px",
+                        "margin-desktop": "48px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-lg": ["Noto Sans Devanagari"],
+                        "headline-sm": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "data-metric": ["Inter"],
+                        "label-sm": ["Noto Sans Devanagari"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-lg": ["16px", { "lineHeight": "20px", "fontWeight": "500" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "display-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "data-metric": ["28px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "body-lg": ["18px", { "lineHeight": "26px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex font-body-md text-body-md overflow-x-hidden">
+<!-- SideNavBar (Desktop) -->
+<nav class="bg-surface-container-low dark:bg-inverse-surface border-r border-outline-variant docked left-0 h-full w-64 flat no shadows hidden md:flex flex-col py-lg space-y-sm z-40 fixed">
+<div class="px-gutter mb-lg flex items-center space-x-sm">
+<img alt="Farm Logo" class="w-12 h-12 rounded-full object-cover" data-alt="A small circular logo showing a green valley with a stylized dairy cow in front, bright sunny day lighting, professional corporate vector art style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOeT3ByHkKB63GiMSeu6NxlHZe-rsoc_4_zJCgjQpYzuFhYKBBCFuFZGhbawKVesNJ3QnIWchXaG_LzdKxTvoClX8cGUqQ_ghh-EYsVmWb9pH3Y5KRuhXV5TeFbvWvqriwd0TjGYvBL824VVO5vKiUoEWM5OU5sxzaAqrWdhsez-aTEreXUR-sgYko9edGAVSRIn1Gpe4ew6UGA-kF_EK55M2H1_BoCtFK-OqWWpIcbXMzkASLcEwPOJZwVOSiWQg9UgLuIj7CiFw"/>
+<div>
+<h1 class="text-headline-sm font-headline-sm text-primary dark:text-inverse-primary truncate">Green Valley Dairy</h1>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Owner Portal</p>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto space-y-unit px-sm">
+<!-- Nav Items -->
+<a class="flex items-center space-x-sm px-gutter py-md rounded-r-full text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest hover:bg-surface-container-high dark:hover:bg-surface-container transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">dashboard</span>
+<span class="text-label-lg font-label-lg">Dashboard</span>
+</a>
+<a class="flex items-center space-x-sm px-gutter py-md rounded-r-full text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest hover:bg-surface-container-high dark:hover:bg-surface-container transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">point_of_sale</span>
+<span class="text-label-lg font-label-lg">Counter Sales</span>
+</a>
+<a class="flex items-center space-x-sm px-gutter py-md rounded-r-full text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest hover:bg-surface-container-high dark:hover:bg-surface-container transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">group</span>
+<span class="text-label-lg font-label-lg">Customers</span>
+</a>
+<a class="flex items-center space-x-sm px-gutter py-md rounded-r-full text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest hover:bg-surface-container-high dark:hover:bg-surface-container transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">water_drop</span>
+<span class="text-label-lg font-label-lg">Milk Stock</span>
+</a>
+<a class="flex items-center space-x-sm px-gutter py-md rounded-r-full text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest hover:bg-surface-container-high dark:hover:bg-surface-container transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">payments</span>
+<span class="text-label-lg font-label-lg">Expenses</span>
+</a>
+<a class="flex items-center space-x-sm px-gutter py-md rounded-r-full bg-secondary-container text-on-secondary-container font-bold translate-x-1 transition-transform group" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">pest_control_rodent</span>
+<span class="text-label-lg font-label-lg">Herd Register</span>
+</a>
+<a class="flex items-center space-x-sm px-gutter py-md rounded-r-full text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest hover:bg-surface-container-high dark:hover:bg-surface-container transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">assessment</span>
+<span class="text-label-lg font-label-lg">Reports</span>
+</a>
+</div>
+<div class="px-gutter pb-lg space-y-sm">
+<button class="w-full flex items-center justify-center space-x-sm bg-primary text-on-primary py-md rounded-lg font-label-lg text-label-lg min-h-[48px] hover:opacity-90 transition-opacity shadow-sm">
+<span class="material-symbols-outlined">qr_code_scanner</span>
+<span>Quick Scan</span>
+</button>
+<div class="border-t border-outline-variant pt-sm">
+<a class="flex items-center space-x-sm px-sm py-sm text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-label-lg font-label-lg">Settings</span>
+</a>
+<a class="flex items-center space-x-sm px-sm py-sm text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="text-label-lg font-label-lg">Help</span>
+</a>
+</div>
+</div>
+</nav>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col md:ml-64 w-full min-h-screen pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-inverse-surface border-b border-outline-variant docked full-width top-0 flat no shadows flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop h-16 sticky z-30">
+<div class="flex items-center">
+<span class="text-headline-md font-headline-md font-bold text-primary dark:text-inverse-primary md:hidden">DairySmart Pro</span>
+<!-- Search bar spacer for layout -->
+<div class="hidden md:block w-64"></div>
+</div>
+<div class="flex items-center space-x-sm">
+<button class="p-2 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-low transition-colors rounded-full focus:outline-none">
+<span class="material-symbols-outlined">translate</span>
+</button>
+<button class="p-2 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-low transition-colors rounded-full focus:outline-none relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="p-2 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-low transition-colors rounded-full focus:outline-none">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 p-margin-mobile md:p-margin-desktop overflow-y-auto">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-lg space-y-md md:space-y-0">
+<div>
+<h2 class="text-display-lg font-display-lg text-on-surface">Herd Register</h2>
+<p class="text-label-lg font-label-lg text-on-surface-variant">Manage your cattle profile and health status.</p>
+</div>
+<div class="flex space-x-md">
+<button class="flex items-center justify-center space-x-xs bg-surface text-primary border border-primary px-lg py-sm rounded-lg font-label-lg text-label-lg min-h-[48px] hover:bg-primary-container hover:text-on-primary-container transition-colors shadow-sm">
+<span class="material-symbols-outlined">add_notes</span>
+<span>Log Health Event</span>
+</button>
+<button class="flex items-center justify-center space-x-xs bg-primary text-on-primary px-lg py-sm rounded-lg font-label-lg text-label-lg min-h-[48px] hover:opacity-90 transition-opacity shadow-sm">
+<span class="material-symbols-outlined">add</span>
+<span>Add Cow</span>
+</button>
+</div>
+</div>
+<!-- Dashboard Metric Cards (Bento style hint) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg mb-xl">
+<div class="bg-surface-container-lowest border border-outline-variant p-lg rounded-xl flex flex-col justify-between">
+<p class="text-label-lg font-label-lg text-on-surface-variant flex items-center gap-2"><span class="material-symbols-outlined text-primary">cruelty_free</span> Total Herd</p>
+<p class="text-data-metric font-data-metric text-on-surface mt-sm">142</p>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-lg rounded-xl flex flex-col justify-between">
+<p class="text-label-lg font-label-lg text-on-surface-variant flex items-center gap-2"><span class="material-symbols-outlined text-secondary">water_drop</span> Total Daily Yield</p>
+<p class="text-data-metric font-data-metric text-on-surface mt-sm">1,840 L</p>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-lg rounded-xl flex flex-col justify-between">
+<p class="text-label-lg font-label-lg text-on-surface-variant flex items-center gap-2"><span class="material-symbols-outlined text-error">warning</span> Under Treatment</p>
+<p class="text-data-metric font-data-metric text-on-surface mt-sm text-error">3</p>
+</div>
+</div>
+<!-- List / Table View -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<!-- Filters/Search -->
+<div class="p-md border-b border-outline-variant flex flex-col sm:flex-row justify-between items-center bg-surface-bright space-y-sm sm:space-y-0">
+<div class="relative w-full sm:w-72">
+<span class="material-symbols-outlined absolute left-3 top-3 text-outline">search</span>
+<input class="w-full pl-10 pr-4 py-2 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary text-body-md font-body-md" placeholder="Search Tag No. or Breed..." type="text"/>
+</div>
+<div class="flex gap-2">
+<select class="border border-outline-variant rounded-lg bg-surface py-2 px-3 text-label-lg font-label-lg text-on-surface focus:outline-none focus:border-secondary">
+<option>All Status</option>
+<option>Healthy</option>
+<option>Under Treatment</option>
+<option>Dry</option>
+</select>
+</div>
+</div>
+<!-- Responsive Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface border-b border-outline-variant text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">
+<th class="p-md font-medium">Tag No. / टैग नंबर</th>
+<th class="p-md font-medium">Breed / नस्ल</th>
+<th class="p-md font-medium">Age / उम्र</th>
+<th class="p-md font-medium">Status / स्थिति</th>
+<th class="p-md font-medium text-right">Daily Yield / दैनिक उपज</th>
+<th class="p-md font-medium text-center">Action</th>
+</tr>
+</thead>
+<tbody class="text-body-md font-body-md divide-y divide-outline-variant">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low transition-colors group cursor-pointer">
+<td class="p-md font-semibold text-on-surface">#T-8042</td>
+<td class="p-md text-on-surface-variant">Gir</td>
+<td class="p-md text-on-surface-variant">4 Yrs</td>
+<td class="p-md">
+<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-secondary-container text-on-secondary-container">
+                                        Healthy
+                                    </span>
+</td>
+<td class="p-md text-right font-medium">18 L</td>
+<td class="p-md text-center text-outline group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low transition-colors group cursor-pointer bg-error-container/10">
+<td class="p-md font-semibold text-on-surface">#T-8045</td>
+<td class="p-md text-on-surface-variant">Holstein</td>
+<td class="p-md text-on-surface-variant">5 Yrs</td>
+<td class="p-md">
+<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-error-container text-on-error-container">
+                                        Under Treatment
+                                    </span>
+</td>
+<td class="p-md text-right font-medium">-- L</td>
+<td class="p-md text-center text-outline group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low transition-colors group cursor-pointer">
+<td class="p-md font-semibold text-on-surface">#T-8102</td>
+<td class="p-md text-on-surface-variant">Sahiwal</td>
+<td class="p-md text-on-surface-variant">6 Yrs</td>
+<td class="p-md">
+<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-surface-variant text-on-surface-variant">
+                                        Dry
+                                    </span>
+</td>
+<td class="p-md text-right font-medium">0 L</td>
+<td class="p-md text-center text-outline group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile) -->
+<nav class="bg-surface dark:bg-inverse-surface border-t border-outline-variant docked full-width bottom-0 rounded-t-xl shadow-lg fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-safe h-20 md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary w-16" href="#">
+<span class="material-symbols-outlined mb-1">home</span>
+<span class="text-label-sm font-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary w-16" href="#">
+<span class="material-symbols-outlined mb-1">shopping_basket</span>
+<span class="text-label-sm font-label-sm">Sales</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-2xl px-4 py-1 scale-90 transition-transform duration-150 w-20" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">cruelty_free</span>
+<span class="text-label-sm font-label-sm font-bold">Herd</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary w-16" href="#">
+<span class="material-symbols-outlined mb-1">receipt_long</span>
+<span class="text-label-sm font-label-sm">Bills</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary w-16" href="#">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="text-label-sm font-label-sm">Profile</span>
+</a>
+</nav>
+</body></html>

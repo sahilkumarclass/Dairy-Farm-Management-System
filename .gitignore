@@ -1,0 +1,27 @@
+# Env
+.env
+.env.local
+.env.*.local
+
+# Node
+node_modules/
+web/dist/
+web/dist-ssr/
+web/.vite/
+
+# Java / Maven
+api/target/
+api/.mvn/wrapper/maven-wrapper.jar
+*.class
+hs_err_pid*
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.DS_Store
+
+# OS
+Thumbs.db

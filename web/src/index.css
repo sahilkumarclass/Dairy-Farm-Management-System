@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light theme — derived from dairy_management_design_system */
+    --background: 220 13% 98%;     /* #f8f9fb */
+    --foreground: 210 11% 11%;     /* #191c1e */
+
+    --card: 0 0% 100%;
+    --card-foreground: 210 11% 11%;
+
+    --primary: 226 100% 22%;       /* #00236f deep blue */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 145 100% 22%;     /* #006e2f grassy green */
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 220 9% 95%;           /* #edeef0 */
+    --muted-foreground: 233 6% 30%;
+
+    --accent: 220 9% 92%;
+    --accent-foreground: 210 11% 11%;
+
+    --destructive: 0 75% 42%;      /* #ba1a1a */
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 12% 80%;         /* #c5c5d3 */
+    --input: 240 12% 80%;
+    --ring: 226 100% 22%;
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}

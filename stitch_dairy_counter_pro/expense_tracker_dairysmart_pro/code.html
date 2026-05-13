@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DairySmart Pro - Expense Tracker</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Noto+Sans+Devanagari:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-error-container": "#93000a",
+                      "secondary": "#006e2f",
+                      "on-primary": "#ffffff",
+                      "on-primary-container": "#90a8ff",
+                      "secondary-fixed": "#6bff8f",
+                      "surface-container-high": "#e7e8ea",
+                      "error-container": "#ffdad6",
+                      "primary-fixed": "#dce1ff",
+                      "on-secondary-fixed": "#002109",
+                      "tertiary-container": "#6e2c00",
+                      "inverse-surface": "#2e3132",
+                      "surface-container-lowest": "#ffffff",
+                      "outline": "#757682",
+                      "on-tertiary-fixed-variant": "#773205",
+                      "tertiary-fixed": "#ffdbcb",
+                      "on-tertiary-container": "#f39461",
+                      "on-primary-fixed-variant": "#264191",
+                      "tertiary": "#4b1c00",
+                      "on-surface-variant": "#444651",
+                      "on-error": "#ffffff",
+                      "primary-container": "#1e3a8a",
+                      "secondary-fixed-dim": "#4ae176",
+                      "outline-variant": "#c5c5d3",
+                      "on-surface": "#191c1e",
+                      "on-primary-fixed": "#00164e",
+                      "inverse-primary": "#b6c4ff",
+                      "background": "#f8f9fb",
+                      "on-secondary-container": "#007432",
+                      "on-tertiary": "#ffffff",
+                      "surface-tint": "#4059aa",
+                      "surface-container-low": "#f3f4f6",
+                      "secondary-container": "#6bff8f",
+                      "surface-container-highest": "#e1e2e4",
+                      "surface-dim": "#d9dadc",
+                      "inverse-on-surface": "#f0f1f3",
+                      "surface": "#f8f9fb",
+                      "primary-fixed-dim": "#b6c4ff",
+                      "on-secondary": "#ffffff",
+                      "surface-container": "#edeef0",
+                      "surface-variant": "#e1e2e4",
+                      "on-background": "#191c1e",
+                      "primary": "#00236f",
+                      "on-tertiary-fixed": "#341100",
+                      "tertiary-fixed-dim": "#ffb691",
+                      "on-secondary-fixed-variant": "#005321",
+                      "surface-bright": "#f8f9fb",
+                      "error": "#ba1a1a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xl": "32px",
+                      "lg": "24px",
+                      "unit": "4px",
+                      "gutter": "16px",
+                      "xs": "4px",
+                      "margin-desktop": "48px",
+                      "sm": "8px",
+                      "md": "16px",
+                      "margin-mobile": "16px"
+              },
+              "fontFamily": {
+                      "headline-md": ["Inter"],
+                      "body-md": ["Inter"],
+                      "label-lg": ["Noto Sans Devanagari"],
+                      "headline-sm": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "data-metric": ["Inter"],
+                      "label-sm": ["Noto Sans Devanagari"],
+                      "body-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-lg": ["16px", {"lineHeight": "20px", "fontWeight": "500"}],
+                      "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "display-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                      "data-metric": ["28px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-24 md:pb-0 md:pl-64 flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-surface border-b border-outline-variant flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop h-16 fixed top-0 left-0 md:left-64 right-0 z-40">
+<div class="flex items-center gap-sm">
+<span class="text-headline-md font-headline-md text-primary">DairySmart Pro</span>
+</div>
+<div class="flex items-center gap-sm">
+<button aria-label="Translate" class="p-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-full">
+<span class="material-symbols-outlined">translate</span>
+</button>
+<button aria-label="Notifications" class="p-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-full">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button aria-label="Account" class="p-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-full">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<!-- SideNavBar (Desktop) -->
+<nav class="bg-surface-container-low border-r border-outline-variant fixed left-0 h-full w-64 hidden md:flex flex-col py-lg space-y-sm z-50">
+<div class="px-md mb-lg">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 bg-primary-container rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">local_florist</span>
+</div>
+<div>
+<h2 class="text-headline-sm font-headline-sm text-primary">Green Valley Dairy</h2>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Owner Portal</p>
+</div>
+</div>
+<button class="mt-md w-full bg-primary text-on-primary font-label-lg text-label-lg py-sm px-md rounded-lg flex items-center justify-center gap-xs hover:opacity-90">
+<span class="material-symbols-outlined">qr_code_scanner</span>
+                Quick Scan
+            </button>
+</div>
+<div class="flex-1 overflow-y-auto pr-sm">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-label-lg font-label-lg">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined">point_of_sale</span>
+<span class="text-label-lg font-label-lg">Counter Sales</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-label-lg font-label-lg">Customers</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined">water_drop</span>
+<span class="text-label-lg font-label-lg">Milk Stock</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container rounded-r-full font-bold transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">payments</span>
+<span class="text-label-lg font-label-lg">Expenses</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined">pest_control_rodent</span>
+<span class="text-label-lg font-label-lg">Herd Register</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined">assessment</span>
+<span class="text-label-lg font-label-lg">Reports</span>
+</a>
+</div>
+<div class="mt-auto px-sm border-t border-outline-variant pt-sm">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-label-lg font-label-lg">Settings</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="text-label-lg font-label-lg">Help</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 mt-16 p-margin-mobile md:p-margin-desktop space-y-xl">
+<!-- Header & Top Action -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-md">
+<div>
+<h1 class="text-display-lg font-display-lg text-primary">Expenses <span class="text-headline-sm font-headline-sm text-on-surface-variant block md:inline md:ml-xs">खर्च</span></h1>
+<p class="text-body-md font-body-md text-on-surface-variant mt-xs">Manage and track your dairy farm expenditures.</p>
+</div>
+<button class="bg-primary text-on-primary px-lg py-sm rounded-lg flex items-center justify-center gap-sm hover:opacity-90 min-h-[48px] shadow-sm">
+<span class="material-symbols-outlined">add</span>
+<span class="font-label-lg text-label-lg">Add Expense / नया खर्च</span>
+</button>
+</div>
+<!-- Dashboard Summary Grid (Bento Style) -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<!-- Total Expenses -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm md:col-span-2 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="text-label-lg font-label-lg text-on-surface-variant">Monthly Total / मासिक कुल</span>
+<span class="material-symbols-outlined text-secondary">trending_up</span>
+</div>
+<div class="mt-lg">
+<div class="text-data-metric font-data-metric text-primary">₹ 45,200</div>
+<p class="text-label-sm font-label-sm text-on-surface-variant mt-xs">+12% from last month</p>
+</div>
+</div>
+<!-- Categories Breakdown -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col justify-between">
+<span class="text-label-lg font-label-lg text-on-surface-variant">Feed / चारा</span>
+<div class="mt-md">
+<div class="text-headline-sm font-headline-sm text-primary">₹ 22,000</div>
+<div class="w-full bg-surface-container h-2 rounded-full mt-sm">
+<div class="bg-secondary-fixed h-2 rounded-full" style="width: 48%"></div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col justify-between">
+<span class="text-label-lg font-label-lg text-on-surface-variant">Medical / चिकित्सा</span>
+<div class="mt-md">
+<div class="text-headline-sm font-headline-sm text-primary">₹ 8,500</div>
+<div class="w-full bg-surface-container h-2 rounded-full mt-sm">
+<div class="bg-error-container h-2 rounded-full" style="width: 18%"></div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col justify-between">
+<span class="text-label-lg font-label-lg text-on-surface-variant">Labor / मज़दूरी</span>
+<div class="mt-md">
+<div class="text-headline-sm font-headline-sm text-primary">₹ 12,000</div>
+<div class="w-full bg-surface-container h-2 rounded-full mt-sm">
+<div class="bg-tertiary-fixed h-2 rounded-full" style="width: 26%"></div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col justify-between">
+<span class="text-label-lg font-label-lg text-on-surface-variant">Utilities / उपयोगिताएँ</span>
+<div class="mt-md">
+<div class="text-headline-sm font-headline-sm text-primary">₹ 2,700</div>
+<div class="w-full bg-surface-container h-2 rounded-full mt-sm">
+<div class="bg-primary-fixed h-2 rounded-full" style="width: 8%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Content Area: Chart & List -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
+<!-- Analytics Chart Area -->
+<div class="lg:col-span-1 bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col">
+<h3 class="text-headline-sm font-headline-sm text-primary mb-md">Income vs Expenses (30 Days)</h3>
+<div class="flex-1 flex items-end justify-between gap-xs min-h-[200px] pb-sm border-b border-outline-variant">
+<!-- Simple CSS Bar Chart -->
+<div class="w-1/6 bg-secondary-fixed h-[80%] rounded-t-sm relative group"><span class="absolute -top-6 left-1/2 -translate-x-1/2 text-label-sm hidden group-hover:block bg-inverse-surface text-on-tertiary px-1 rounded">Inc</span></div>
+<div class="w-1/6 bg-primary h-[60%] rounded-t-sm relative group"><span class="absolute -top-6 left-1/2 -translate-x-1/2 text-label-sm hidden group-hover:block bg-inverse-surface text-on-tertiary px-1 rounded">Exp</span></div>
+<div class="w-1/6 bg-secondary-fixed h-[90%] rounded-t-sm relative group"></div>
+<div class="w-1/6 bg-primary h-[50%] rounded-t-sm relative group"></div>
+<div class="w-1/6 bg-secondary-fixed h-[75%] rounded-t-sm relative group"></div>
+<div class="w-1/6 bg-primary h-[40%] rounded-t-sm relative group"></div>
+</div>
+<div class="flex justify-center gap-md mt-sm">
+<div class="flex items-center gap-xs"><div class="w-3 h-3 bg-secondary-fixed rounded-full"></div><span class="text-label-sm font-label-sm">Income</span></div>
+<div class="flex items-center gap-xs"><div class="w-3 h-3 bg-primary rounded-full"></div><span class="text-label-sm font-label-sm">Expenses</span></div>
+</div>
+</div>
+<!-- Expense Log List -->
+<div class="lg:col-span-2 bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden">
+<div class="p-md border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+<h3 class="text-headline-sm font-headline-sm text-primary">Recent Logs / हाल के लॉग</h3>
+<button class="text-label-lg font-label-lg text-primary hover:underline">View All</button>
+</div>
+<div class="divide-y divide-outline-variant">
+<!-- List Item 1 -->
+<div class="p-md flex items-center justify-between hover:bg-surface-container transition-colors group cursor-pointer">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-lg bg-surface-variant flex items-center justify-center overflow-hidden border border-outline-variant">
+<span class="material-symbols-outlined text-outline">receipt_long</span>
+</div>
+<div>
+<h4 class="text-label-lg font-label-lg text-on-surface">Cattle Feed - Premium Mix</h4>
+<p class="text-body-md font-body-md text-on-surface-variant flex items-center gap-sm">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span> Oct 24
+                                    <span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container rounded-full text-label-sm">Feed</span>
+</p>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<span class="text-headline-sm font-headline-sm text-on-surface">₹ 5,400</span>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">chevron_right</span>
+</div>
+</div>
+<!-- List Item 2 -->
+<div class="p-md flex items-center justify-between hover:bg-surface-container transition-colors group cursor-pointer">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-lg bg-surface-variant flex items-center justify-center overflow-hidden border border-outline-variant">
+<!-- Example of uploaded bill thumbnail using CSS placeholder -->
+<div class="w-full h-full bg-surface-dim relative">
+<div class="absolute inset-0 bg-gradient-to-tr from-surface-variant to-outline-variant opacity-50"></div>
+<span class="material-symbols-outlined absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-outline text-[20px]">image</span>
+</div>
+</div>
+<div>
+<h4 class="text-label-lg font-label-lg text-on-surface">Veterinary Visit &amp; Meds</h4>
+<p class="text-body-md font-body-md text-on-surface-variant flex items-center gap-sm">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span> Oct 22
+                                    <span class="px-2 py-0.5 bg-error-container text-on-error-container rounded-full text-label-sm">Medical</span>
+</p>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<span class="text-headline-sm font-headline-sm text-on-surface">₹ 3,200</span>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">chevron_right</span>
+</div>
+</div>
+<!-- List Item 3 -->
+<div class="p-md flex items-center justify-between hover:bg-surface-container transition-colors group cursor-pointer">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-lg bg-surface-variant flex items-center justify-center overflow-hidden border border-outline-variant">
+<span class="material-symbols-outlined text-outline">receipt_long</span>
+</div>
+<div>
+<h4 class="text-label-lg font-label-lg text-on-surface">Farm Hand Wages (Weekly)</h4>
+<p class="text-body-md font-body-md text-on-surface-variant flex items-center gap-sm">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span> Oct 20
+                                    <span class="px-2 py-0.5 bg-tertiary-container text-on-tertiary rounded-full text-label-sm">Labor</span>
+</p>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<span class="text-headline-sm font-headline-sm text-on-surface">₹ 4,000</span>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="bg-surface border-t border-outline-variant fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-safe h-20 md:hidden shadow-lg">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-label-sm font-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary" href="#">
+<span class="material-symbols-outlined">shopping_basket</span>
+<span class="text-label-sm font-label-sm">Sales</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary" href="#">
+<span class="material-symbols-outlined">cruelty_free</span>
+<span class="text-label-sm font-label-sm">Herd</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-2xl px-4 py-1 scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">receipt_long</span>
+<span class="text-label-sm font-label-sm">Bills</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-label-sm font-label-sm">Profile</span>
+</a>
+</nav>
+</body></html>
