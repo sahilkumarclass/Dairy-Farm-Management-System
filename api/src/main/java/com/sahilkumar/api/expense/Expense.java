@@ -1,10 +1,14 @@
 package com.sahilkumar.api.expense;
 
 import com.sahilkumar.api.common.BaseEntity;
+import com.sahilkumar.api.herd.Cow;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -35,4 +39,8 @@ public class Expense extends BaseEntity {
 
     @Column(name = "expense_date", nullable = false)
     private LocalDate expenseDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cow_id")
+    private Cow cow;
 }

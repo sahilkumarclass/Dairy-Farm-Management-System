@@ -9,6 +9,11 @@ export interface CustomerInput {
   status?: CustomerStatus;
 }
 
+export interface CreateCustomerLoginInput {
+  username: string;
+  password: string;
+}
+
 export async function listCustomers(params: {
   q?: string;
   status?: CustomerStatus;
@@ -31,4 +36,9 @@ export async function updateCustomer(id: string, input: CustomerInput) {
 
 export async function deleteCustomer(id: string) {
   await api.delete(`/api/customers/${id}`);
+}
+
+export async function createCustomerLogin(id: string, input: CreateCustomerLoginInput) {
+  const { data } = await api.post<Customer>(`/api/customers/${id}/login`, input);
+  return data;
 }

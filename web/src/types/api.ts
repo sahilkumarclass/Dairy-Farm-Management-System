@@ -72,6 +72,8 @@ export interface Expense {
   amount: string;
   notes: string | null;
   expenseDate: string;
+  cowId: string | null;
+  cowTagNo: string | null;
 }
 
 export type BillStatus = "UNPAID" | "PARTIAL" | "PAID";
@@ -111,4 +113,71 @@ export interface DashboardSummary {
   monthProfit: string;
   outstandingDues: string;
   activeCustomers: number;
+}
+
+// ----- Herd -----
+export type HealthStatus = "HEALTHY" | "UNDER_TREATMENT" | "DRY" | "SOLD" | "DECEASED";
+export type Gender = "FEMALE" | "MALE";
+export type HealthEventType = "VACCINATION" | "VET_VISIT" | "TREATMENT" | "CHECKUP" | "OTHER";
+
+export interface Cow {
+  id: string;
+  tagNo: string;
+  name: string | null;
+  breed: string | null;
+  gender: Gender;
+  ageMonths: number | null;
+  healthStatus: HealthStatus;
+  dailyYieldEstimateLiters: string | null;
+  dateAcquired: string | null;
+  notes: string | null;
+}
+
+export interface CowDetail {
+  cow: Cow;
+  monthLiters: string;
+  lifetimeLiters: string;
+  monthHealthCost: string;
+  monthExpenseTotal: string;
+}
+
+export interface CowSummary {
+  totalCows: number;
+  healthyCount: number;
+  underTreatmentCount: number;
+  dryCount: number;
+  monthLiters: string;
+  monthHealthCost: string;
+  monthFeedAndOtherCost: string;
+}
+
+export interface CowMilkProductionEntry {
+  id: string;
+  cowId: string;
+  cowTagNo: string;
+  productionDate: string;
+  session: MilkSession;
+  liters: string;
+  notes: string | null;
+}
+
+export interface CowHealthLog {
+  id: string;
+  cowId: string;
+  cowTagNo: string;
+  eventType: HealthEventType;
+  eventDate: string;
+  nextDueDate: string | null;
+  vetName: string | null;
+  cost: string | null;
+  notes: string | null;
+}
+
+// ----- Customer portal -----
+export interface CustomerSelfDashboard {
+  customer: Customer;
+  monthLiters: string;
+  monthAmount: string;
+  outstandingTotal: string;
+  currentMonthStatus: BillStatus | null;
 }

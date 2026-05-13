@@ -11,9 +11,15 @@ public record ExpenseResponse(
         ExpenseCategory category,
         BigDecimal amount,
         String notes,
-        LocalDate expenseDate
+        LocalDate expenseDate,
+        UUID cowId,
+        String cowTagNo
 ) {
     public static ExpenseResponse from(Expense e) {
-        return new ExpenseResponse(e.getId(), e.getCategory(), e.getAmount(), e.getNotes(), e.getExpenseDate());
+        UUID cowId = e.getCow() == null ? null : e.getCow().getId();
+        String cowTag = e.getCow() == null ? null : e.getCow().getTagNo();
+        return new ExpenseResponse(
+                e.getId(), e.getCategory(), e.getAmount(),
+                e.getNotes(), e.getExpenseDate(), cowId, cowTag);
     }
 }

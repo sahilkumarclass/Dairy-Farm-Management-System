@@ -1,11 +1,12 @@
 import { NavLink } from "react-router-dom";
-import { LayoutDashboard, Users, Milk, Receipt, FileText, Sprout } from "lucide-react";
+import { LayoutDashboard, Users, Milk, Receipt, FileText, Sprout, Beef } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const nav = [
   { to: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
   { to: "/customers", icon: Users, label: "Customers" },
   { to: "/milk-entries", icon: Milk, label: "Milk Entries" },
+  { to: "/herd", icon: Beef, label: "Herd" },
   { to: "/expenses", icon: Receipt, label: "Expenses" },
   { to: "/bills", icon: FileText, label: "Bills" },
 ];

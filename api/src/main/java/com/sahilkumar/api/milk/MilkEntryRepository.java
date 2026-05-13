@@ -33,4 +33,18 @@ public interface MilkEntryRepository extends JpaRepository<MilkEntry, UUID> {
             WHERE m.entryDate BETWEEN :from AND :to
             """)
     BigDecimal sumAmount(LocalDate from, LocalDate to);
+
+    @Query("""
+            SELECT COALESCE(SUM(m.quantityLiters), 0) FROM MilkEntry m
+            WHERE m.customer.id = :customerId
+              AND m.entryDate BETWEEN :from AND :to
+            """)
+    BigDecimal sumLitersForCustomer(UUID customerId, LocalDate from, LocalDate to);
+
+    @Query("""
+            SELECT COALESCE(SUM(m.totalAmount), 0) FROM MilkEntry m
+            WHERE m.customer.id = :customerId
+              AND m.entryDate BETWEEN :from AND :to
+            """)
+    BigDecimal sumAmountForCustomer(UUID customerId, LocalDate from, LocalDate to);
 }

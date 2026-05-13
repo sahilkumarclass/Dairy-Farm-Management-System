@@ -15,7 +15,8 @@ export function ProtectedRoute({ children, roles }: Props) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
   if (roles && !roles.includes(user.role)) {
-    return <Navigate to="/dashboard" replace />;
+    const fallback = user.role === "CUSTOMER" ? "/portal/dashboard" : "/dashboard";
+    return <Navigate to={fallback} replace />;
   }
   return <>{children}</>;
 }

@@ -30,7 +30,8 @@ export function LoginPage() {
         role: auth.role,
       });
       toast.success(`Welcome, ${auth.fullName}`);
-      navigate("/dashboard", { replace: true });
+      const destination = auth.role === "CUSTOMER" ? "/portal/dashboard" : "/dashboard";
+      navigate(destination, { replace: true });
     } catch (err) {
       toast.error(extractErrorMessage(err));
     } finally {

@@ -7,13 +7,32 @@ Phase 1 MVP: Spring Boot 3 + React 18 (TypeScript) + PostgreSQL.
 | Module | Status |
 |---|---|
 | Auth (JWT, OWNER/STAFF/CUSTOMER roles) | ✅ |
-| Customers (CRUD, search, custom rates) | ✅ |
+| Customers (CRUD, search, custom rates, portal logins) | ✅ |
 | Milk Entries (auto-total from rate × liters) | ✅ |
-| Expenses (categorized) | ✅ |
+| Expenses (categorized, optional per-cow tagging) | ✅ |
 | Billing (monthly generation, payments, status) | ✅ |
 | Dashboard (today / month KPIs) | ✅ |
+| Herd Register — cow CRUD, per-cow milk production, vet/vaccination log with cost | ✅ |
+| Customer Portal — `/portal/*` for CUSTOMER role: own dashboard, milk history, bills | ✅ |
 
-Phases 2–3 from the architecture doc (notifications, stock, herd register, WhatsApp, etc.) are out of scope for this pass.
+Still pending from the architecture doc: WhatsApp/SMS notifications, file uploads, milk-stock aggregation, multi-farm support.
+
+## Customer portal access
+
+The customer panel is gated to the `CUSTOMER` role. To give a customer a login:
+
+1. As an OWNER, open **Customers**.
+2. Click **Create login** on a row, set a username/password.
+3. The customer signs in at the same `/login` and is auto-routed to `/portal/dashboard`.
+
+Behind the scenes this hits `POST /api/customers/{id}/login` — it creates a `User` with role `CUSTOMER` and links it 1:1 to the existing `Customer` row (unique index `uq_customers_user`).
+
+## Herd register
+
+- `/herd` — list of cows with health-status filter and per-month summary (total cows, healthy, under treatment, dry, month production, vet cost, per-cow expenses).
+- `/herd/:id` — cow detail: month/lifetime yield, vet cost, total tagged expenses, plus per-session production log and health-event log.
+- Daily milk production per cow is logged separately from per-customer milk entries — they're different concerns (one tracks what each cow produced, the other tracks what each customer took home).
+- Expenses can be tagged to a cow (e.g. feed bought for a specific cow, vet fee for a sick cow) — the cow detail screen rolls these up.
 
 ## Repo layout
 
@@ -79,5 +98,4 @@ Frontend reads `VITE_API_BASE_URL` (defaults to `http://localhost:8080`).
 
 - No refresh-token flow yet — access tokens expire after 1h and the user re-logs in. Phase 2.
 - No tests beyond the auto-generated `contextLoads`. That test currently requires Postgres to be up; consider adding `@DataJpaTest` with Testcontainers in Phase 2.
-- Customer panel (architecture §2B) not yet built — backend supports the role, frontend currently routes only owners/staff into the shell.
-- File uploads, notifications, herd register, stock tracking: Phases 2–3.
+- File uploads (invoice/expense photos), WhatsApp/SMS notifications, aggregate milk-stock tracker, multi-farm support: Phases 2–3.

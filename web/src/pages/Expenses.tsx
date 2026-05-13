@@ -17,6 +17,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { createExpense, listExpenses, type ExpenseInput } from "@/features/expenses/api";
+import { listCows } from "@/features/herd/api";
 import { extractErrorMessage } from "@/lib/api";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import type { ExpenseCategory } from "@/types/api";
@@ -64,6 +65,7 @@ export function ExpensesPage() {
               <TableRow>
                 <TableHead>Date</TableHead>
                 <TableHead>Category</TableHead>
+                <TableHead>Cow</TableHead>
                 <TableHead>Notes</TableHead>
                 <TableHead className="text-right">Amount</TableHead>
               </TableRow>
@@ -71,18 +73,19 @@ export function ExpensesPage() {
             <TableBody>
               {isLoading && (
                 <TableRow>
-                  <TableCell colSpan={4} className="text-center text-muted-foreground">Loading…</TableCell>
+                  <TableCell colSpan={5} className="text-center text-muted-foreground">Loading…</TableCell>
                 </TableRow>
               )}
               {data?.content.length === 0 && !isLoading && (
                 <TableRow>
-                  <TableCell colSpan={4} className="text-center text-muted-foreground">No expenses yet</TableCell>
+                  <TableCell colSpan={5} className="text-center text-muted-foreground">No expenses yet</TableCell>
                 </TableRow>
               )}
               {data?.content.map((e) => (
                 <TableRow key={e.id}>
                   <TableCell>{formatDate(e.expenseDate)}</TableCell>
                   <TableCell><Badge variant="outline">{e.category}</Badge></TableCell>
+                  <TableCell className="text-muted-foreground">{e.cowTagNo ?? "—"}</TableCell>
                   <TableCell className="text-muted-foreground">{e.notes ?? "—"}</TableCell>
                   <TableCell className="text-right font-semibold">{formatCurrency(e.amount)}</TableCell>
                 </TableRow>
@@ -114,6 +117,12 @@ function ExpenseDialog({ open, onOpenChange, onSubmit, submitting }: DialogProps
   const [amount, setAmount] = useState("");
   const [notes, setNotes] = useState("");
   const [expenseDate, setExpenseDate] = useState(new Date().toISOString().slice(0, 10));
+  const [cowId, setCowId] = useState<string>("NONE");
+
+  const cows = useQuery({
+    queryKey: ["cows", "for-expense"],
+    queryFn: () => listCows({ size: 200 }),
+  });
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -122,6 +131,7 @@ function ExpenseDialog({ open, onOpenChange, onSubmit, submitting }: DialogProps
       amount: Number(amount),
       notes: notes || null,
       expenseDate,
+      cowId: cowId === "NONE" ? null : cowId,
     });
   }
 
@@ -150,6 +160,20 @@ function ExpenseDialog({ open, onOpenChange, onSubmit, submitting }: DialogProps
             <Label htmlFor="date">Date</Label>
             <Input id="date" type="date" value={expenseDate}
                    onChange={(e) => setExpenseDate(e.target.value)} required />
+          </div>
+          <div className="space-y-2">
+            <Label>Tag to a cow (optional)</Label>
+            <Select value={cowId} onValueChange={setCowId}>
+              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="NONE">— Not tagged —</SelectItem>
+                {cows.data?.content.map((c) => (
+                  <SelectItem key={c.id} value={c.id}>
+                    {c.tagNo}{c.name ? ` · ${c.name}` : ""}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           <div className="space-y-2">
             <Label htmlFor="notes">Notes</Label>

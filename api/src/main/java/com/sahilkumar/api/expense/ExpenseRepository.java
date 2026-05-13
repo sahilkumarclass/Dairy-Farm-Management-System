@@ -24,4 +24,18 @@ public interface ExpenseRepository extends JpaRepository<Expense, UUID> {
             WHERE e.expenseDate BETWEEN :from AND :to
             """)
     BigDecimal sumAmount(LocalDate from, LocalDate to);
+
+    @Query("""
+            SELECT COALESCE(SUM(e.amount), 0) FROM Expense e
+            WHERE e.cow.id = :cowId
+              AND e.expenseDate BETWEEN :from AND :to
+            """)
+    BigDecimal sumAmountForCow(UUID cowId, LocalDate from, LocalDate to);
+
+    @Query("""
+            SELECT COALESCE(SUM(e.amount), 0) FROM Expense e
+            WHERE e.cow IS NOT NULL
+              AND e.expenseDate BETWEEN :from AND :to
+            """)
+    BigDecimal sumAmountForAnyCow(LocalDate from, LocalDate to);
 }

@@ -6,6 +6,7 @@ export interface ExpenseInput {
   amount: number;
   notes?: string | null;
   expenseDate: string;
+  cowId?: string | null;
 }
 
 export async function listExpenses(params: {
