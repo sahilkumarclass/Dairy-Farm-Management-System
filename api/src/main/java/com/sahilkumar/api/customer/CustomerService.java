@@ -7,6 +7,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +18,11 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
 
-    public Page<CustomerResponse> list(String query, CustomerStatus status, Pageable pageable) {
-        return customerRepository.search(query, status, pageable).map(CustomerResponse::from);
+    public Page<CustomerResponse> list(String q, CustomerStatus status, Pageable pageable) {
+        Specification<Customer> spec = Specification
+                .where(CustomerSpecs.nameOrPhoneContains(q))
+                .and(CustomerSpecs.hasStatus(status));
+        return customerRepository.findAll(spec, pageable).map(CustomerResponse::from);
     }
 
     public CustomerResponse get(UUID id) {
