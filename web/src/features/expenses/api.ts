@@ -25,6 +25,11 @@ export async function createExpense(input: ExpenseInput) {
   return data;
 }
 
+export async function updateExpense(id: string, input: ExpenseInput) {
+  const { data } = await api.put<Expense>(`/api/expenses/${id}`, input);
+  return data;
+}
+
 export async function deleteExpense(id: string) {
   await api.delete(`/api/expenses/${id}`);
 }
