@@ -1,6 +1,7 @@
 package com.sahilkumar.api.security;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +31,8 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http, CorsConfigurationSource cors) throws Exception {
+    SecurityFilterChain filterChain(HttpSecurity http,
+                                    @Qualifier("corsConfigurationSource") CorsConfigurationSource cors) throws Exception {
         http
                 .cors(c -> c.configurationSource(cors))
                 .csrf(csrf -> csrf.disable())
