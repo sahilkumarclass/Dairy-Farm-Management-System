@@ -11,4 +11,8 @@ public interface CustomerRepository
     long countByStatus(CustomerStatus status);
 
     Optional<Customer> findByUserId(UUID userId);
+
+    Optional<Customer> findByPhone(String phone);
+
+    boolean existsByPhoneAndIdNot(String phone, UUID id);
 }

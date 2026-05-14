@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { KeyRound, PlayCircle, Plus, Search, StopCircle } from "lucide-react";
+import { KeyRound, PlayCircle, Plus, Search, StopCircle, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -21,6 +21,7 @@ import {
   createCustomer,
   createCustomerLogin,
   deleteCustomer,
+  hardDeleteCustomer,
   listCustomers,
   reactivateCustomer,
   type CreateCustomerLoginInput,
@@ -35,7 +36,7 @@ type StatusFilter = CustomerStatus | "ALL";
 export function CustomersPage() {
   const qc = useQueryClient();
   const [q, setQ] = useState("");
-  const [statusFilter, setStatusFilter] = useState<StatusFilter>("ACTIVE");
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("ALL");
   const [open, setOpen] = useState(false);
   const [loginTarget, setLoginTarget] = useState<Customer | null>(null);
 
@@ -87,9 +88,28 @@ export function CustomersPage() {
     onError: (e) => toast.error(extractErrorMessage(e)),
   });
 
+  const hardDeleteMut = useMutation({
+    mutationFn: hardDeleteCustomer,
+    onSuccess: () => {
+      toast.success("Customer permanently deleted");
+      qc.invalidateQueries({ queryKey: ["customers"] });
+    },
+    onError: (e) => toast.error(extractErrorMessage(e)),
+  });
+
   function confirmStop(c: Customer) {
     if (window.confirm(`Stop service for ${c.name}? They'll be marked inactive but their history is kept.`)) {
       stopMut.mutate(c.id);
+    }
+  }
+
+  function confirmHardDelete(c: Customer) {
+    if (
+      window.confirm(
+        `Permanently delete ${c.name}? This cannot be undone. Only allowed if they have no milk entries or bills.`,
+      )
+    ) {
+      hardDeleteMut.mutate(c.id);
     }
   }
 
@@ -169,15 +189,27 @@ export function CustomersPage() {
                           <KeyRound className="h-3.5 w-3.5" /> Create login
                         </Button>
                         {inactive ? (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="gap-1"
-                            onClick={() => reactivateMut.mutate(c.id)}
-                            disabled={reactivateMut.isPending}
-                          >
-                            <PlayCircle className="h-3.5 w-3.5" /> Reactivate
-                          </Button>
+                          <>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="gap-1"
+                              onClick={() => reactivateMut.mutate(c.id)}
+                              disabled={reactivateMut.isPending}
+                            >
+                              <PlayCircle className="h-3.5 w-3.5" /> Reactivate
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="gap-1 text-destructive hover:bg-destructive/10"
+                              onClick={() => confirmHardDelete(c)}
+                              disabled={hardDeleteMut.isPending}
+                              title="Permanently delete (only if no milk entries or bills)"
+                            >
+                              <Trash2 className="h-3.5 w-3.5" /> Delete
+                            </Button>
+                          </>
                         ) : (
                           <Button
                             size="sm"

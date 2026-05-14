@@ -74,4 +74,11 @@ public class CustomerController {
     public CustomerResponse reactivate(@PathVariable UUID id) {
         return customerService.reactivate(id);
     }
+
+    @DeleteMapping("/{id}/permanent")
+    @PreAuthorize("hasRole('OWNER')")
+    public ResponseEntity<Void> hardDelete(@PathVariable UUID id) {
+        customerService.hardDelete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

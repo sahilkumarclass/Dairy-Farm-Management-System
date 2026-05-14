@@ -11,6 +11,8 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface BillRepository extends JpaRepository<Bill, UUID> {
 
+    boolean existsByCustomerId(UUID customerId);
+
     Optional<Bill> findByCustomerIdAndPeriodYearAndPeriodMonth(UUID customerId, int year, int month);
 
     @Query("""
