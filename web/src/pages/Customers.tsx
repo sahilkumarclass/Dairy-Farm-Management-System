@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { KeyRound, PlayCircle, Plus, Search, StopCircle, Trash2 } from "lucide-react";
+import { KeyRound, Lock, PlayCircle, Plus, Search, StopCircle, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { ResetPasswordDialog } from "@/components/auth/ResetPasswordDialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -24,6 +25,7 @@ import {
   hardDeleteCustomer,
   listCustomers,
   reactivateCustomer,
+  resetUserPassword,
   type CreateCustomerLoginInput,
   type CustomerInput,
 } from "@/features/customers/api";
@@ -39,6 +41,7 @@ export function CustomersPage() {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("ALL");
   const [open, setOpen] = useState(false);
   const [loginTarget, setLoginTarget] = useState<Customer | null>(null);
+  const [resetTarget, setResetTarget] = useState<Customer | null>(null);
 
   const { data, isLoading } = useQuery({
     queryKey: ["customers", q, statusFilter],
@@ -93,6 +96,15 @@ export function CustomersPage() {
     onSuccess: () => {
       toast.success("Customer permanently deleted");
       qc.invalidateQueries({ queryKey: ["customers"] });
+    },
+    onError: (e) => toast.error(extractErrorMessage(e)),
+  });
+
+  const resetMut = useMutation({
+    mutationFn: (password: string) => resetUserPassword(resetTarget!.userId!, password),
+    onSuccess: () => {
+      toast.success("Password reset");
+      setResetTarget(null);
     },
     onError: (e) => toast.error(extractErrorMessage(e)),
   });
@@ -185,9 +197,21 @@ export function CustomersPage() {
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
-                        <Button size="sm" variant="outline" className="gap-1" onClick={() => setLoginTarget(c)}>
-                          <KeyRound className="h-3.5 w-3.5" /> Create login
-                        </Button>
+                        {c.userId ? (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="gap-1"
+                            onClick={() => setResetTarget(c)}
+                            title={c.username ? `Reset password for ${c.username}` : "Reset password"}
+                          >
+                            <Lock className="h-3.5 w-3.5" /> Reset password
+                          </Button>
+                        ) : (
+                          <Button size="sm" variant="outline" className="gap-1" onClick={() => setLoginTarget(c)}>
+                            <KeyRound className="h-3.5 w-3.5" /> Create login
+                          </Button>
+                        )}
                         {inactive ? (
                           <>
                             <Button
@@ -244,6 +268,15 @@ export function CustomersPage() {
         customer={loginTarget}
         onSubmit={(v) => loginMut.mutate(v)}
         submitting={loginMut.isPending}
+      />
+
+      <ResetPasswordDialog
+        open={!!resetTarget}
+        onOpenChange={(v) => !v && setResetTarget(null)}
+        targetName={resetTarget?.name ?? null}
+        targetUsername={resetTarget?.username ?? null}
+        onSubmit={(p) => resetMut.mutate(p)}
+        submitting={resetMut.isPending}
       />
     </div>
   );

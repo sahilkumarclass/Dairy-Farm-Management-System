@@ -13,11 +13,15 @@ public record CustomerResponse(
         String address,
         BigDecimal customMilkRate,
         CustomerStatus status,
-        Instant createdAt
+        Instant createdAt,
+        UUID userId,
+        String username
 ) {
     public static CustomerResponse from(Customer c) {
         return new CustomerResponse(
                 c.getId(), c.getName(), c.getPhone(), c.getAddress(),
-                c.getCustomMilkRate(), c.getStatus(), c.getCreatedAt());
+                c.getCustomMilkRate(), c.getStatus(), c.getCreatedAt(),
+                c.getUser() != null ? c.getUser().getId() : null,
+                c.getUser() != null ? c.getUser().getUsername() : null);
     }
 }

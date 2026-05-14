@@ -9,6 +9,11 @@ import { ExpensesPage } from "@/pages/Expenses";
 import { BillsPage } from "@/pages/Bills";
 import { HerdPage } from "@/pages/Herd";
 import { CowDetailPage } from "@/pages/CowDetail";
+import { StaffPage } from "@/pages/Staff";
+
+const ownerOnly = (el: JSX.Element) => (
+  <ProtectedRoute roles={["OWNER"]}>{el}</ProtectedRoute>
+);
 
 export const router = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
@@ -24,10 +29,11 @@ export const router = createBrowserRouter([
       { path: "dashboard", element: <DashboardPage /> },
       { path: "customers", element: <CustomersPage /> },
       { path: "milk-entries", element: <MilkEntriesPage /> },
-      { path: "expenses", element: <ExpensesPage /> },
-      { path: "bills", element: <BillsPage /> },
-      { path: "herd", element: <HerdPage /> },
-      { path: "herd/:id", element: <CowDetailPage /> },
+      { path: "expenses", element: ownerOnly(<ExpensesPage />) },
+      { path: "bills", element: ownerOnly(<BillsPage />) },
+      { path: "herd", element: ownerOnly(<HerdPage />) },
+      { path: "herd/:id", element: ownerOnly(<CowDetailPage />) },
+      { path: "staff", element: ownerOnly(<StaffPage />) },
     ],
   },
   { path: "*", element: <Navigate to="/dashboard" replace /> },
