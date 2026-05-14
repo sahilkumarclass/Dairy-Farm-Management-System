@@ -3,11 +3,13 @@ package com.sahilkumar.api.customer;
 import com.sahilkumar.api.auth.Role;
 import com.sahilkumar.api.auth.User;
 import com.sahilkumar.api.auth.UserRepository;
+import com.sahilkumar.api.billing.BillRepository;
 import com.sahilkumar.api.common.exception.BusinessException;
 import com.sahilkumar.api.common.exception.ResourceNotFoundException;
 import com.sahilkumar.api.customer.dto.CreateCustomerLoginRequest;
 import com.sahilkumar.api.customer.dto.CustomerRequest;
 import com.sahilkumar.api.customer.dto.CustomerResponse;
+import com.sahilkumar.api.milk.MilkEntryRepository;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,6 +28,8 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MilkEntryRepository milkEntryRepository;
+    private final BillRepository billRepository;
 
     public Page<CustomerResponse> list(String q, CustomerStatus status, Pageable pageable) {
         Specification<Customer> spec = Specification
@@ -40,6 +44,15 @@ public class CustomerService {
 
     @Transactional
     public CustomerResponse create(CustomerRequest req) {
+        customerRepository.findByPhone(req.phone()).ifPresent(existing -> {
+            String hint = existing.getStatus() == CustomerStatus.INACTIVE
+                    ? " Reactivate them instead."
+                    : "";
+            throw new BusinessException(
+                    "A customer with phone " + req.phone() + " already exists: "
+                            + existing.getName() + " (" + existing.getStatus() + ")." + hint,
+                    HttpStatus.CONFLICT);
+        });
         Customer c = Customer.builder()
                 .name(req.name())
                 .phone(req.phone())
@@ -53,6 +66,12 @@ public class CustomerService {
     @Transactional
     public CustomerResponse update(UUID id, CustomerRequest req) {
         Customer c = load(id);
+        if (!c.getPhone().equals(req.phone())
+                && customerRepository.existsByPhoneAndIdNot(req.phone(), id)) {
+            throw new BusinessException(
+                    "Another customer already uses phone " + req.phone() + ".",
+                    HttpStatus.CONFLICT);
+        }
         c.setName(req.name());
         c.setPhone(req.phone());
         c.setAddress(req.address());
@@ -74,6 +93,31 @@ public class CustomerService {
         Customer c = load(id);
         c.setStatus(CustomerStatus.ACTIVE);
         return CustomerResponse.from(c);
+    }
+
+    @Transactional
+    public void hardDelete(UUID id) {
+        Customer c = load(id);
+        if (c.getStatus() != CustomerStatus.INACTIVE) {
+            throw new BusinessException(
+                    "Stop the customer's service before deleting them permanently.",
+                    HttpStatus.CONFLICT);
+        }
+        if (milkEntryRepository.existsByCustomerId(id)) {
+            throw new BusinessException(
+                    "Cannot permanently delete: customer has milk entries on record.",
+                    HttpStatus.CONFLICT);
+        }
+        if (billRepository.existsByCustomerId(id)) {
+            throw new BusinessException(
+                    "Cannot permanently delete: customer has bills on record.",
+                    HttpStatus.CONFLICT);
+        }
+        User linkedUser = c.getUser();
+        customerRepository.delete(c);
+        if (linkedUser != null) {
+            userRepository.delete(linkedUser);
+        }
     }
 
     @Transactional

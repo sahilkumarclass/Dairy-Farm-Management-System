@@ -1,5 +1,9 @@
 package com.sahilkumar.api.security;
 
+import com.sahilkumar.api.auth.Role;
+import com.sahilkumar.api.auth.User;
+import com.sahilkumar.api.customer.CustomerRepository;
+import com.sahilkumar.api.customer.CustomerStatus;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,6 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private final CustomerRepository customerRepository;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
@@ -45,12 +50,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails user = userDetailsService.loadUserByUsername(username);
-            if (jwtService.isValid(token, user)) {
+            if (jwtService.isValid(token, user) && isCustomerActive(user)) {
                 var auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
         }
         chain.doFilter(request, response);
+    }
+
+    private boolean isCustomerActive(UserDetails userDetails) {
+        if (!(userDetails instanceof User user) || user.getRole() != Role.CUSTOMER) {
+            return true;
+        }
+        return customerRepository.findByUserId(user.getId())
+                .map(c -> c.getStatus() == CustomerStatus.ACTIVE)
+                .orElse(false);
     }
 }

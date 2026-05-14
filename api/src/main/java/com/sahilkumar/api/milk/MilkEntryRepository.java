@@ -11,6 +11,8 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface MilkEntryRepository extends JpaRepository<MilkEntry, UUID> {
 
+    boolean existsByCustomerId(UUID customerId);
+
     @Query("""
             SELECT m FROM MilkEntry m
             WHERE (:customerId IS NULL OR m.customer.id = :customerId)

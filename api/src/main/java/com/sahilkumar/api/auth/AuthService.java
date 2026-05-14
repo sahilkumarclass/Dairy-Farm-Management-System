@@ -4,6 +4,8 @@ import com.sahilkumar.api.auth.dto.AuthResponse;
 import com.sahilkumar.api.auth.dto.LoginRequest;
 import com.sahilkumar.api.auth.dto.RegisterRequest;
 import com.sahilkumar.api.common.exception.BusinessException;
+import com.sahilkumar.api.customer.CustomerRepository;
+import com.sahilkumar.api.customer.CustomerStatus;
 import com.sahilkumar.api.security.JwtProperties;
 import com.sahilkumar.api.security.JwtService;
 import java.util.Map;
@@ -24,6 +26,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final JwtProperties jwtProperties;
+    private final CustomerRepository customerRepository;
 
     @Transactional
     public AuthResponse register(RegisterRequest req) {
@@ -46,6 +49,16 @@ public class AuthService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(req.username(), req.password()));
         User user = userRepository.findByUsername(req.username()).orElseThrow();
+        if (user.getRole() == Role.CUSTOMER) {
+            boolean active = customerRepository.findByUserId(user.getId())
+                    .map(c -> c.getStatus() == CustomerStatus.ACTIVE)
+                    .orElse(false);
+            if (!active) {
+                throw new BusinessException(
+                        "Service is inactive. Please contact the dairy owner.",
+                        HttpStatus.FORBIDDEN);
+            }
+        }
         return buildResponse(user);
     }
 
