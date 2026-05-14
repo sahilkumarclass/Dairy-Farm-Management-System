@@ -1,0 +1,85 @@
+{
+  "common": {
+    "save": "Save",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "loading": "Loading…",
+    "search": "Search",
+    "active": "Active",
+    "inactive": "Inactive",
+    "actions": "Actions",
+    "phone": "Phone",
+    "name": "Name",
+    "language": "Language"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "customers": "Customers",
+    "milkEntries": "Milk Entries",
+    "herd": "Herd",
+    "expenses": "Expenses",
+    "bills": "Bills",
+    "staff": "Staff"
+  },
+  "topbar": {
+    "welcome": "Welcome back",
+    "signOut": "Sign out"
+  },
+  "login": {
+    "title": "Sign in",
+    "subtitle": "Welcome back",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Sign in",
+    "signingIn": "Signing in…"
+  },
+  "staff": {
+    "title": "Staff",
+    "subtitle": "Manage farm hands — add, pay, enable/disable, or remove staff accounts",
+    "addStaff": "Add Staff",
+    "username": "Username",
+    "fullName": "Full name",
+    "statusActive": "ACTIVE",
+    "statusDisabled": "DISABLED",
+    "pay": "Pay",
+    "reset": "Reset",
+    "enable": "Enable",
+    "disable": "Disable",
+    "emptyState": "No staff yet. Click Add Staff to invite your first hand.",
+    "newStaff": "New staff",
+    "newStaffDescription": "Create a login for a new farm hand. They'll be able to log in to the admin app on web or phone.",
+    "phoneOptional": "Phone (optional)",
+    "addStaffButton": "Add staff",
+    "adding": "Adding…",
+    "editStaff": "Edit staff",
+    "editDescription": "Updating {{username}}. Username is fixed.",
+    "recordPayment": "Record payment",
+    "payDescription": "Paying {{name}}. This is recorded as a LABOR expense.",
+    "amount": "Amount (₹)",
+    "date": "Date",
+    "notes": "Notes (optional)",
+    "notesPlaceholder": "e.g. August salary",
+    "recording": "Recording…",
+    "recordPaymentButton": "Record payment",
+    "confirmDelete": "Permanently delete staff \"{{fullName}}\" ({{username}})? This cannot be undone.",
+    "toast": {
+      "added": "Staff added",
+      "updated": "Staff updated",
+      "enabled": "Staff enabled",
+      "disabled": "Staff disabled",
+      "deleted": "Staff deleted",
+      "passwordReset": "Password reset",
+      "paymentRecorded": "Payment recorded",
+      "positiveAmount": "Enter a positive amount"
+    }
+  },
+  "resetPassword": {
+    "title": "Reset password",
+    "description": "Set a new password for {{name}}. Share it with them — they'll use it on their next login.",
+    "newPassword": "New password",
+    "submit": "Reset password",
+    "resetting": "Resetting…"
+  }
+}

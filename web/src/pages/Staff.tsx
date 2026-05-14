@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Lock,
@@ -52,6 +53,7 @@ import { cn, formatCurrency } from "@/lib/utils";
 import type { StaffUser } from "@/types/api";
 
 export function StaffPage() {
+  const { t } = useTranslation();
   const qc = useQueryClient();
   const currentUserId = useAuthStore((s) => s.user?.userId);
   const [addOpen, setAddOpen] = useState(false);
@@ -69,7 +71,7 @@ export function StaffPage() {
   const createMut = useMutation({
     mutationFn: createStaff,
     onSuccess: () => {
-      toast.success("Staff added");
+      toast.success(t("staff.toast.added"));
       invalidate();
       setAddOpen(false);
     },
@@ -79,7 +81,7 @@ export function StaffPage() {
   const updateMut = useMutation({
     mutationFn: (input: StaffUpdateInput) => updateStaff(editTarget!.id, input),
     onSuccess: () => {
-      toast.success("Staff updated");
+      toast.success(t("staff.toast.updated"));
       invalidate();
       setEditTarget(null);
     },
@@ -89,7 +91,7 @@ export function StaffPage() {
   const enableMut = useMutation({
     mutationFn: enableStaff,
     onSuccess: () => {
-      toast.success("Staff enabled");
+      toast.success(t("staff.toast.enabled"));
       invalidate();
     },
     onError: (e) => toast.error(extractErrorMessage(e)),
@@ -98,7 +100,7 @@ export function StaffPage() {
   const disableMut = useMutation({
     mutationFn: disableStaff,
     onSuccess: () => {
-      toast.success("Staff disabled");
+      toast.success(t("staff.toast.disabled"));
       invalidate();
     },
     onError: (e) => toast.error(extractErrorMessage(e)),
@@ -107,7 +109,7 @@ export function StaffPage() {
   const deleteMut = useMutation({
     mutationFn: deleteStaff,
     onSuccess: () => {
-      toast.success("Staff deleted");
+      toast.success(t("staff.toast.deleted"));
       invalidate();
     },
     onError: (e) => toast.error(extractErrorMessage(e)),
@@ -116,7 +118,7 @@ export function StaffPage() {
   const resetMut = useMutation({
     mutationFn: (password: string) => resetUserPassword(resetTarget!.id, password),
     onSuccess: () => {
-      toast.success("Password reset");
+      toast.success(t("staff.toast.passwordReset"));
       setResetTarget(null);
     },
     onError: (e) => toast.error(extractErrorMessage(e)),
@@ -125,7 +127,7 @@ export function StaffPage() {
   const payMut = useMutation({
     mutationFn: (input: PayStaffInput) => payStaff(payTarget!, input),
     onSuccess: () => {
-      toast.success("Payment recorded");
+      toast.success(t("staff.toast.paymentRecorded"));
       qc.invalidateQueries({ queryKey: ["expenses"] });
       setPayTarget(null);
     },
@@ -135,7 +137,7 @@ export function StaffPage() {
   function confirmDelete(s: StaffUser) {
     if (
       window.confirm(
-        `Permanently delete staff "${s.fullName}" (${s.username})? This cannot be undone.`,
+        t("staff.confirmDelete", { fullName: s.fullName, username: s.username }),
       )
     ) {
       deleteMut.mutate(s.id);
@@ -147,14 +149,12 @@ export function StaffPage() {
       <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-end">
         <div>
           <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
-            <UserCog className="h-6 w-6" /> Staff
+            <UserCog className="h-6 w-6" /> {t("staff.title")}
           </h1>
-          <p className="text-sm text-muted-foreground">
-            Manage farm hands — add, pay, enable/disable, or remove staff accounts
-          </p>
+          <p className="text-sm text-muted-foreground">{t("staff.subtitle")}</p>
         </div>
         <Button onClick={() => setAddOpen(true)} className="gap-2">
-          <Plus className="h-4 w-4" /> Add Staff
+          <Plus className="h-4 w-4" /> {t("staff.addStaff")}
         </Button>
       </div>
 
@@ -164,25 +164,25 @@ export function StaffPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Username</TableHead>
-                  <TableHead>Full name</TableHead>
-                  <TableHead>Phone</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>{t("staff.username")}</TableHead>
+                  <TableHead>{t("staff.fullName")}</TableHead>
+                  <TableHead>{t("common.phone")}</TableHead>
+                  <TableHead>{t("common.active")}</TableHead>
+                  <TableHead className="text-right">{t("common.actions")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {isLoading && (
                   <TableRow>
                     <TableCell colSpan={5} className="text-center text-muted-foreground">
-                      Loading…
+                      {t("common.loading")}
                     </TableCell>
                   </TableRow>
                 )}
                 {data?.length === 0 && !isLoading && (
                   <TableRow>
                     <TableCell colSpan={5} className="text-center text-muted-foreground">
-                      No staff yet. Click <strong>Add Staff</strong> to invite your first hand.
+                      {t("staff.emptyState")}
                     </TableCell>
                   </TableRow>
                 )}
@@ -196,7 +196,7 @@ export function StaffPage() {
                       <TableCell className="text-muted-foreground">{s.phone ?? "—"}</TableCell>
                       <TableCell>
                         <Badge variant={disabled ? "outline" : "success"}>
-                          {disabled ? "DISABLED" : "ACTIVE"}
+                          {disabled ? t("staff.statusDisabled") : t("staff.statusActive")}
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right">
@@ -207,16 +207,16 @@ export function StaffPage() {
                             className="gap-1"
                             onClick={() => setPayTarget(s)}
                           >
-                            <Wallet className="h-3.5 w-3.5" /> Pay
+                            <Wallet className="h-3.5 w-3.5" /> {t("staff.pay")}
                           </Button>
                           <Button
                             size="sm"
                             variant="outline"
                             className="gap-1"
                             onClick={() => setResetTarget(s)}
-                            title="Reset password"
+                            title={t("resetPassword.title")}
                           >
-                            <Lock className="h-3.5 w-3.5" /> Reset
+                            <Lock className="h-3.5 w-3.5" /> {t("staff.reset")}
                           </Button>
                           <Button
                             size="sm"
@@ -224,7 +224,7 @@ export function StaffPage() {
                             className="gap-1"
                             onClick={() => setEditTarget(s)}
                           >
-                            <Pencil className="h-3.5 w-3.5" /> Edit
+                            <Pencil className="h-3.5 w-3.5" /> {t("common.edit")}
                           </Button>
                           {!isSelf && (disabled ? (
                             <Button
@@ -234,7 +234,7 @@ export function StaffPage() {
                               onClick={() => enableMut.mutate(s.id)}
                               disabled={enableMut.isPending}
                             >
-                              <PlayCircle className="h-3.5 w-3.5" /> Enable
+                              <PlayCircle className="h-3.5 w-3.5" /> {t("staff.enable")}
                             </Button>
                           ) : (
                             <Button
@@ -244,7 +244,7 @@ export function StaffPage() {
                               onClick={() => disableMut.mutate(s.id)}
                               disabled={disableMut.isPending}
                             >
-                              <Pause className="h-3.5 w-3.5" /> Disable
+                              <Pause className="h-3.5 w-3.5" /> {t("staff.disable")}
                             </Button>
                           ))}
                           {!isSelf && (
@@ -255,7 +255,7 @@ export function StaffPage() {
                               onClick={() => confirmDelete(s)}
                               disabled={deleteMut.isPending}
                             >
-                              <Trash2 className="h-3.5 w-3.5" /> Delete
+                              <Trash2 className="h-3.5 w-3.5" /> {t("common.delete")}
                             </Button>
                           )}
                         </div>
@@ -312,6 +312,7 @@ interface CreateDialogProps {
 }
 
 function StaffCreateDialog({ open, onOpenChange, onSubmit, submitting }: CreateDialogProps) {
+  const { t } = useTranslation();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
@@ -337,15 +338,12 @@ function StaffCreateDialog({ open, onOpenChange, onSubmit, submitting }: CreateD
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>New staff</DialogTitle>
-          <DialogDescription>
-            Create a login for a new farm hand. They'll be able to log in to the admin app on web or
-            phone.
-          </DialogDescription>
+          <DialogTitle>{t("staff.newStaff")}</DialogTitle>
+          <DialogDescription>{t("staff.newStaffDescription")}</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="s-username">Username</Label>
+            <Label htmlFor="s-username">{t("staff.username")}</Label>
             <Input
               id="s-username"
               value={username}
@@ -356,7 +354,7 @@ function StaffCreateDialog({ open, onOpenChange, onSubmit, submitting }: CreateD
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="s-password">Password</Label>
+            <Label htmlFor="s-password">{t("login.password")}</Label>
             <Input
               id="s-password"
               type="password"
@@ -368,7 +366,7 @@ function StaffCreateDialog({ open, onOpenChange, onSubmit, submitting }: CreateD
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="s-full">Full name</Label>
+            <Label htmlFor="s-full">{t("staff.fullName")}</Label>
             <Input
               id="s-full"
               value={fullName}
@@ -378,7 +376,7 @@ function StaffCreateDialog({ open, onOpenChange, onSubmit, submitting }: CreateD
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="s-phone">Phone (optional)</Label>
+            <Label htmlFor="s-phone">{t("staff.phoneOptional")}</Label>
             <Input
               id="s-phone"
               value={phone}
@@ -388,10 +386,10 @@ function StaffCreateDialog({ open, onOpenChange, onSubmit, submitting }: CreateD
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              {t("common.cancel")}
             </Button>
             <Button type="submit" disabled={submitting}>
-              {submitting ? "Adding…" : "Add staff"}
+              {submitting ? t("staff.adding") : t("staff.addStaffButton")}
             </Button>
           </DialogFooter>
         </form>
@@ -409,6 +407,7 @@ interface EditDialogProps {
 }
 
 function StaffEditDialog({ open, onOpenChange, staff, onSubmit, submitting }: EditDialogProps) {
+  const { t } = useTranslation();
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
 
@@ -430,16 +429,16 @@ function StaffEditDialog({ open, onOpenChange, staff, onSubmit, submitting }: Ed
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit staff</DialogTitle>
+          <DialogTitle>{t("staff.editStaff")}</DialogTitle>
           {staff && (
             <DialogDescription>
-              Updating <code>{staff.username}</code>. Username is fixed.
+              {t("staff.editDescription", { username: staff.username })}
             </DialogDescription>
           )}
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="e-full">Full name</Label>
+            <Label htmlFor="e-full">{t("staff.fullName")}</Label>
             <Input
               id="e-full"
               value={fullName}
@@ -449,7 +448,7 @@ function StaffEditDialog({ open, onOpenChange, staff, onSubmit, submitting }: Ed
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="e-phone">Phone</Label>
+            <Label htmlFor="e-phone">{t("common.phone")}</Label>
             <Input
               id="e-phone"
               value={phone}
@@ -459,10 +458,10 @@ function StaffEditDialog({ open, onOpenChange, staff, onSubmit, submitting }: Ed
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              {t("common.cancel")}
             </Button>
             <Button type="submit" disabled={submitting}>
-              {submitting ? "Saving…" : "Save"}
+              {submitting ? t("common.saving") : t("common.save")}
             </Button>
           </DialogFooter>
         </form>
@@ -480,6 +479,7 @@ interface PayDialogProps {
 }
 
 function PayStaffDialog({ open, onOpenChange, staff, onSubmit, submitting }: PayDialogProps) {
+  const { t } = useTranslation();
   const today = new Date().toISOString().slice(0, 10);
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState(today);
@@ -489,7 +489,7 @@ function PayStaffDialog({ open, onOpenChange, staff, onSubmit, submitting }: Pay
     e.preventDefault();
     const value = Number(amount);
     if (!Number.isFinite(value) || value <= 0) {
-      toast.error("Enter a positive amount");
+      toast.error(t("staff.toast.positiveAmount"));
       return;
     }
     onSubmit({ amount: value, expenseDate: date, notes: notes || null });
@@ -509,16 +509,16 @@ function PayStaffDialog({ open, onOpenChange, staff, onSubmit, submitting }: Pay
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Record payment</DialogTitle>
+          <DialogTitle>{t("staff.recordPayment")}</DialogTitle>
           {staff && (
             <DialogDescription>
-              Paying <strong>{staff.fullName}</strong>. This is recorded as a LABOR expense.
+              {t("staff.payDescription", { name: staff.fullName })}
             </DialogDescription>
           )}
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="p-amount">Amount (₹)</Label>
+            <Label htmlFor="p-amount">{t("staff.amount")}</Label>
             <Input
               id="p-amount"
               type="number"
@@ -534,7 +534,7 @@ function PayStaffDialog({ open, onOpenChange, staff, onSubmit, submitting }: Pay
             )}
           </div>
           <div className="space-y-2">
-            <Label htmlFor="p-date">Date</Label>
+            <Label htmlFor="p-date">{t("staff.date")}</Label>
             <Input
               id="p-date"
               type="date"
@@ -544,21 +544,21 @@ function PayStaffDialog({ open, onOpenChange, staff, onSubmit, submitting }: Pay
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="p-notes">Notes (optional)</Label>
+            <Label htmlFor="p-notes">{t("staff.notes")}</Label>
             <Input
               id="p-notes"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               maxLength={400}
-              placeholder="e.g. August salary"
+              placeholder={t("staff.notesPlaceholder")}
             />
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              {t("common.cancel")}
             </Button>
             <Button type="submit" disabled={submitting}>
-              {submitting ? "Recording…" : "Record payment"}
+              {submitting ? t("staff.recording") : t("staff.recordPaymentButton")}
             </Button>
           </DialogFooter>
         </form>

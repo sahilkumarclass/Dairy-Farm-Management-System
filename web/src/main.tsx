@@ -5,6 +5,7 @@ import { RouterProvider } from "react-router-dom";
 import { Toaster } from "sonner";
 import { router } from "@/router";
 import { queryClient } from "@/lib/queryClient";
+import "@/i18n";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

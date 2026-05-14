@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -28,6 +29,7 @@ export function ResetPasswordDialog({
   onSubmit,
   submitting,
 }: ResetPasswordDialogProps) {
+  const { t } = useTranslation();
   const [password, setPassword] = useState("");
 
   function handleSubmit(e: React.FormEvent) {
@@ -46,18 +48,17 @@ export function ResetPasswordDialog({
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Reset password</DialogTitle>
+          <DialogTitle>{t("resetPassword.title")}</DialogTitle>
           {targetName && (
             <DialogDescription>
-              Set a new password for <strong>{targetName}</strong>
-              {targetUsername ? <> (<code>{targetUsername}</code>)</> : null}. Share it with them —
-              they'll use it on their next login.
+              {t("resetPassword.description", { name: targetName })}
+              {targetUsername ? <> (<code>{targetUsername}</code>)</> : null}
             </DialogDescription>
           )}
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="rp">New password</Label>
+            <Label htmlFor="rp">{t("resetPassword.newPassword")}</Label>
             <Input
               id="rp"
               type="password"
@@ -70,10 +71,10 @@ export function ResetPasswordDialog({
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              {t("common.cancel")}
             </Button>
             <Button type="submit" disabled={submitting}>
-              {submitting ? "Resetting…" : "Reset password"}
+              {submitting ? t("resetPassword.resetting") : t("resetPassword.submit")}
             </Button>
           </DialogFooter>
         </form>

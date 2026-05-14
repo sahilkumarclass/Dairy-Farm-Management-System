@@ -1,7 +1,9 @@
 import { LogOut, Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/stores/auth";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 interface TopBarProps {
   onMobileMenuClick?: () => void;
@@ -10,6 +12,7 @@ interface TopBarProps {
 export function TopBar({ onMobileMenuClick }: TopBarProps = {}) {
   const navigate = useNavigate();
   const { user, clear } = useAuthStore();
+  const { t } = useTranslation();
 
   function handleLogout() {
     clear();
@@ -29,14 +32,17 @@ export function TopBar({ onMobileMenuClick }: TopBarProps = {}) {
           <Menu className="h-5 w-5" />
         </Button>
         <div>
-          <div className="text-xs text-muted-foreground sm:text-sm">Welcome back</div>
+          <div className="text-xs text-muted-foreground sm:text-sm">{t("topbar.welcome")}</div>
           <div className="text-sm font-semibold sm:text-base">{user?.fullName ?? user?.username}</div>
         </div>
       </div>
-      <Button variant="ghost" size="sm" onClick={handleLogout} className="gap-2">
-        <LogOut className="h-4 w-4" />
-        <span className="hidden sm:inline">Sign out</span>
-      </Button>
+      <div className="flex items-center gap-1 sm:gap-2">
+        <LanguageSwitcher />
+        <Button variant="ghost" size="sm" onClick={handleLogout} className="gap-2">
+          <LogOut className="h-4 w-4" />
+          <span className="hidden sm:inline">{t("topbar.signOut")}</span>
+        </Button>
+      </div>
     </header>
   );
 }
