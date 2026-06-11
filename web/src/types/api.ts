@@ -29,6 +29,16 @@ export interface Page<T> {
   last: boolean;
 }
 
+export interface StaffUser {
+  id: string;
+  username: string;
+  fullName: string;
+  phone: string | null;
+  role: Role;
+  enabled: boolean;
+  createdAt: string;
+}
+
 export type CustomerStatus = "ACTIVE" | "INACTIVE";
 
 export interface Customer {
@@ -39,6 +49,8 @@ export interface Customer {
   customMilkRate: string | null;
   status: CustomerStatus;
   createdAt: string;
+  userId: string | null;
+  username: string | null;
 }
 
 export type MilkType = "COW" | "BUFFALO" | "MIXED";

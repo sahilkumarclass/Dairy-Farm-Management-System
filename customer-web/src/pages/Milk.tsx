@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { Moon, Sun } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -6,6 +7,7 @@ import { getMyMilkEntries } from "@/features/portal/api";
 import { formatCurrency, formatDate, formatLiters } from "@/lib/utils";
 
 export function MilkPage() {
+  const { t } = useTranslation();
   const { data, isLoading } = useQuery({
     queryKey: ["portal-milk"],
     queryFn: () => getMyMilkEntries({ size: 100 }),
@@ -14,28 +16,28 @@ export function MilkPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Milk history</h1>
-        <p className="text-sm text-muted-foreground">Every entry recorded for you</p>
+        <h1 className="text-2xl font-bold tracking-tight">{t("milk.title")}</h1>
+        <p className="text-sm text-muted-foreground">{t("milk.subtitle")}</p>
       </div>
       <Card>
         <CardContent className="p-0">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Date</TableHead>
-                <TableHead>Session</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Liters</TableHead>
-                <TableHead>Rate</TableHead>
-                <TableHead className="text-right">Amount</TableHead>
+                <TableHead>{t("milk.date")}</TableHead>
+                <TableHead>{t("milk.session")}</TableHead>
+                <TableHead>{t("milk.type")}</TableHead>
+                <TableHead>{t("milk.liters")}</TableHead>
+                <TableHead>{t("milk.rate")}</TableHead>
+                <TableHead className="text-right">{t("milk.amount")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {isLoading && (
-                <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground">Loading…</TableCell></TableRow>
+                <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground">{t("common.loading")}</TableCell></TableRow>
               )}
               {data?.content.length === 0 && !isLoading && (
-                <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground">No entries yet</TableCell></TableRow>
+                <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground">{t("milk.empty")}</TableCell></TableRow>
               )}
               {data?.content.map((m) => (
                 <TableRow key={m.id}>

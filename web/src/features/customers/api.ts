@@ -51,3 +51,7 @@ export async function createCustomerLogin(id: string, input: CreateCustomerLogin
   const { data } = await api.post<Customer>(`/api/customers/${id}/login`, input);
   return data;
 }
+
+export async function resetUserPassword(userId: string, password: string) {
+  await api.post(`/api/users/${userId}/password`, { password });
+}

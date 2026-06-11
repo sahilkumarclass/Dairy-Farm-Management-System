@@ -1,0 +1,85 @@
+{
+  "common": {
+    "save": "ਸੰਭਾਲੋ",
+    "saving": "ਸੰਭਾਲ ਰਿਹਾ ਹੈ…",
+    "cancel": "ਰੱਦ ਕਰੋ",
+    "delete": "ਮਿਟਾਓ",
+    "edit": "ਸੋਧੋ",
+    "loading": "ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ…",
+    "search": "ਖੋਜੋ",
+    "active": "ਸਰਗਰਮ",
+    "inactive": "ਅਸਰਗਰਮ",
+    "actions": "ਕਾਰਵਾਈਆਂ",
+    "phone": "ਫ਼ੋਨ",
+    "name": "ਨਾਮ",
+    "language": "ਭਾਸ਼ਾ"
+  },
+  "nav": {
+    "dashboard": "ਡੈਸ਼ਬੋਰਡ",
+    "customers": "ਗਾਹਕ",
+    "milkEntries": "ਦੁੱਧ ਐਂਟਰੀ",
+    "herd": "ਪਸ਼ੂ",
+    "expenses": "ਖਰਚੇ",
+    "bills": "ਬਿੱਲ",
+    "staff": "ਕਰਮਚਾਰੀ"
+  },
+  "topbar": {
+    "welcome": "ਜੀ ਆਇਆਂ ਨੂੰ",
+    "signOut": "ਸਾਈਨ ਆਊਟ"
+  },
+  "login": {
+    "title": "ਸਾਈਨ ਇਨ ਕਰੋ",
+    "subtitle": "ਜੀ ਆਇਆਂ ਨੂੰ",
+    "username": "ਯੂਜ਼ਰਨੇਮ",
+    "password": "ਪਾਸਵਰਡ",
+    "submit": "ਸਾਈਨ ਇਨ ਕਰੋ",
+    "signingIn": "ਸਾਈਨ ਇਨ ਹੋ ਰਿਹਾ ਹੈ…"
+  },
+  "staff": {
+    "title": "ਕਰਮਚਾਰੀ",
+    "subtitle": "ਫਾਰਮ ਦੇ ਕਰਮਚਾਰੀਆਂ ਦਾ ਪ੍ਰਬੰਧ — ਜੋੜੋ, ਭੁਗਤਾਨ ਕਰੋ, ਚਾਲੂ/ਬੰਦ ਕਰੋ ਜਾਂ ਮਿਟਾਓ",
+    "addStaff": "ਕਰਮਚਾਰੀ ਜੋੜੋ",
+    "username": "ਯੂਜ਼ਰਨੇਮ",
+    "fullName": "ਪੂਰਾ ਨਾਮ",
+    "statusActive": "ਸਰਗਰਮ",
+    "statusDisabled": "ਬੰਦ",
+    "pay": "ਭੁਗਤਾਨ",
+    "reset": "ਰੀਸੈੱਟ",
+    "enable": "ਚਾਲੂ ਕਰੋ",
+    "disable": "ਬੰਦ ਕਰੋ",
+    "emptyState": "ਅਜੇ ਕੋਈ ਕਰਮਚਾਰੀ ਨਹੀਂ ਹੈ। ਪਹਿਲੇ ਨੂੰ ਜੋੜਨ ਲਈ 'ਕਰਮਚਾਰੀ ਜੋੜੋ' 'ਤੇ ਕਲਿਕ ਕਰੋ।",
+    "newStaff": "ਨਵਾਂ ਕਰਮਚਾਰੀ",
+    "newStaffDescription": "ਨਵੇਂ ਕਰਮਚਾਰੀ ਲਈ ਲੌਗਇਨ ਬਣਾਓ। ਉਹ ਵੈੱਬ ਜਾਂ ਫ਼ੋਨ ਉੱਤੇ ਐਪ ਵਰਤ ਸਕਣਗੇ।",
+    "phoneOptional": "ਫ਼ੋਨ (ਵਿਕਲਪਿਕ)",
+    "addStaffButton": "ਕਰਮਚਾਰੀ ਜੋੜੋ",
+    "adding": "ਜੋੜਿਆ ਜਾ ਰਿਹਾ ਹੈ…",
+    "editStaff": "ਕਰਮਚਾਰੀ ਸੋਧੋ",
+    "editDescription": "{{username}} ਨੂੰ ਅੱਪਡੇਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ। ਯੂਜ਼ਰਨੇਮ ਨਹੀਂ ਬਦਲ ਸਕਦਾ।",
+    "recordPayment": "ਭੁਗਤਾਨ ਦਰਜ ਕਰੋ",
+    "payDescription": "{{name}} ਨੂੰ ਭੁਗਤਾਨ। ਇਹ ਮਜ਼ਦੂਰੀ (LABOR) ਖਰਚੇ ਵਜੋਂ ਦਰਜ ਹੋਵੇਗਾ।",
+    "amount": "ਰਕਮ (₹)",
+    "date": "ਮਿਤੀ",
+    "notes": "ਟਿੱਪਣੀ (ਵਿਕਲਪਿਕ)",
+    "notesPlaceholder": "ਜਿਵੇਂ ਅਗਸਤ ਦੀ ਤਨਖਾਹ",
+    "recording": "ਦਰਜ ਹੋ ਰਿਹਾ ਹੈ…",
+    "recordPaymentButton": "ਭੁਗਤਾਨ ਦਰਜ ਕਰੋ",
+    "confirmDelete": "ਕਰਮਚਾਰੀ \"{{fullName}}\" ({{username}}) ਨੂੰ ਪੱਕੇ ਤੌਰ 'ਤੇ ਮਿਟਾਓ? ਇਹ ਵਾਪਸ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ।",
+    "toast": {
+      "added": "ਕਰਮਚਾਰੀ ਜੋੜਿਆ ਗਿਆ",
+      "updated": "ਕਰਮਚਾਰੀ ਅੱਪਡੇਟ ਕੀਤਾ ਗਿਆ",
+      "enabled": "ਕਰਮਚਾਰੀ ਚਾਲੂ ਕੀਤਾ ਗਿਆ",
+      "disabled": "ਕਰਮਚਾਰੀ ਬੰਦ ਕੀਤਾ ਗਿਆ",
+      "deleted": "ਕਰਮਚਾਰੀ ਮਿਟਾਇਆ ਗਿਆ",
+      "passwordReset": "ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕੀਤਾ ਗਿਆ",
+      "paymentRecorded": "ਭੁਗਤਾਨ ਦਰਜ ਕੀਤਾ ਗਿਆ",
+      "positiveAmount": "ਸਕਾਰਾਤਮਕ ਰਕਮ ਭਰੋ"
+    }
+  },
+  "resetPassword": {
+    "title": "ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕਰੋ",
+    "description": "{{name}} ਲਈ ਨਵਾਂ ਪਾਸਵਰਡ ਸੈੱਟ ਕਰੋ। ਉਹਨਾਂ ਨੂੰ ਦੱਸੋ — ਉਹ ਅਗਲੇ ਲੌਗਇਨ 'ਤੇ ਇਸ ਦੀ ਵਰਤੋਂ ਕਰਨਗੇ।",
+    "newPassword": "ਨਵਾਂ ਪਾਸਵਰਡ",
+    "submit": "ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕਰੋ",
+    "resetting": "ਰੀਸੈੱਟ ਹੋ ਰਿਹਾ ਹੈ…"
+  }
+}

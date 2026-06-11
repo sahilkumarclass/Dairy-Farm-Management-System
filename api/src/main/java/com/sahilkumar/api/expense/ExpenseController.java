@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/expenses")
 @RequiredArgsConstructor
-@PreAuthorize("hasAnyRole('OWNER','STAFF')")
+@PreAuthorize("hasRole('OWNER')")
 @Tag(name = "Expenses")
 public class ExpenseController {
 

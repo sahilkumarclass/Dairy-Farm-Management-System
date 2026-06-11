@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/cows")
 @RequiredArgsConstructor
-@PreAuthorize("hasAnyRole('OWNER','STAFF')")
+@PreAuthorize("hasRole('OWNER')")
 @Tag(name = "Herd")
 public class CowController {
 

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="brand_tagline">डेयरी फ़ार्म प्रबंधन</string>
+
+    <!-- Navigation -->
+    <string name="nav_dashboard">डैशबोर्ड</string>
+    <string name="nav_customers">ग्राहक</string>
+    <string name="nav_milk">दूध की प्रविष्टि</string>
+    <string name="nav_expenses">खर्च</string>
+    <string name="nav_bills">बिल</string>
+    <string name="nav_herd">पशुधन</string>
+    <string name="nav_staff">कर्मचारी</string>
+
+    <!-- Common actions -->
+    <string name="action_save">सहेजें</string>
+    <string name="action_saving">सहेज रहा है…</string>
+    <string name="action_cancel">रद्द करें</string>
+    <string name="action_delete">हटाएँ</string>
+    <string name="action_edit">बदलें</string>
+    <string name="action_add">जोड़ें</string>
+    <string name="action_retry">पुनः प्रयास करें</string>
+    <string name="action_search">खोजें</string>
+    <string name="action_sign_out">साइन आउट</string>
+    <string name="action_close">बंद करें</string>
+    <string name="action_generate">बनाएँ</string>
+
+    <!-- Common labels -->
+    <string name="common_loading">लोड हो रहा है…</string>
+    <string name="common_active">सक्रिय</string>
+    <string name="common_inactive">निष्क्रिय</string>
+    <string name="common_phone">फ़ोन</string>
+    <string name="common_name">नाम</string>
+    <string name="common_address">पता</string>
+    <string name="common_notes">टिप्पणी</string>
+    <string name="common_notes_optional">टिप्पणी (वैकल्पिक)</string>
+    <string name="common_date">तारीख़</string>
+    <string name="common_amount">राशि (₹)</string>
+    <string name="common_status">स्थिति</string>
+    <string name="common_language">भाषा</string>
+    <string name="common_none">—</string>
+    <string name="common_optional">(वैकल्पिक)</string>
+    <string name="generic_error">कुछ गलत हो गया।</string>
+    <string name="saved">सहेजा गया</string>
+    <string name="deleted">हटाया गया</string>
+
+    <!-- Login -->
+    <string name="login_title">साइन इन करें</string>
+    <string name="login_subtitle">वापसी पर स्वागत है</string>
+    <string name="login_username">उपयोगकर्ता नाम</string>
+    <string name="login_password">पासवर्ड</string>
+    <string name="login_submit">साइन इन करें</string>
+    <string name="login_signing_in">साइन इन हो रहा है…</string>
+    <string name="login_role_error">यह ऐप केवल मालिक और कर्मचारियों के लिए है।</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_today_liters">आज का दूध</string>
+    <string name="dashboard_today_sales">आज की बिक्री</string>
+    <string name="dashboard_month_liters">माह का दूध</string>
+    <string name="dashboard_month_sales">माह की बिक्री</string>
+    <string name="dashboard_month_expenses">माह का खर्च</string>
+    <string name="dashboard_month_profit">माह का लाभ</string>
+    <string name="dashboard_outstanding">बकाया राशि</string>
+    <string name="dashboard_active_customers">सक्रिय ग्राहक</string>
+
+    <!-- Customers -->
+    <string name="customers_add">ग्राहक जोड़ें</string>
+    <string name="customers_search_hint">नाम या फ़ोन खोजें</string>
+    <string name="customer_username">उपयोगकर्ता नाम</string>
+    <string name="customer_custom_rate">प्रति लीटर कस्टम दर (₹)</string>
+    <string name="customer_create_login">लॉगिन बनाएँ</string>
+    <string name="customer_reset_password">पासवर्ड रीसेट करें</string>
+    <string name="customer_reactivate">पुनः सक्रिय करें</string>
+    <string name="customer_stop">सेवा रोकें</string>
+    <string name="customer_delete">स्थायी रूप से हटाएँ</string>
+    <string name="customer_new">नया ग्राहक</string>
+    <string name="customer_edit">ग्राहक संपादित करें</string>
+    <string name="phone_helper_10">ठीक 10 अंक</string>
+    <string name="filter_all">सभी</string>
+
+    <!-- Milk -->
+    <string name="milk_add">दूध प्रविष्टि जोड़ें</string>
+    <string name="milk_type">दूध का प्रकार</string>
+    <string name="milk_quantity">मात्रा (लीटर)</string>
+    <string name="milk_rate">प्रति लीटर दर (₹)</string>
+    <string name="milk_session">सत्र</string>
+    <string name="milk_total">कुल</string>
+    <string name="milk_new">नई दूध प्रविष्टि</string>
+    <string name="milk_edit">दूध प्रविष्टि संपादित करें</string>
+    <string name="milk_customer">ग्राहक</string>
+
+    <!-- Expenses -->
+    <string name="expenses_add">खर्च जोड़ें</string>
+    <string name="expense_category">श्रेणी</string>
+    <string name="expense_new">नया खर्च</string>
+    <string name="expense_edit">खर्च संपादित करें</string>
+
+    <!-- Bills -->
+    <string name="bills_generate">बिल बनाएँ</string>
+    <string name="bill_period">अवधि</string>
+    <string name="bill_total">कुल</string>
+    <string name="bill_paid">भुगतान किया</string>
+    <string name="bill_remaining">शेष</string>
+    <string name="bill_record_payment">भुगतान दर्ज करें</string>
+    <string name="bill_payments">भुगतान</string>
+    <string name="payment_method">तरीका</string>
+    <string name="payment_reference">संदर्भ (वैकल्पिक)</string>
+    <string name="bill_month">माह</string>
+    <string name="bill_year">वर्ष</string>
+    <string name="bills_generate_confirm">इस माह के बिल बनाएँ?</string>
+
+    <!-- Herd -->
+    <string name="herd_add">गाय जोड़ें</string>
+    <string name="cow_tag">टैग नंबर</string>
+    <string name="cow_breed">नस्ल</string>
+    <string name="cow_gender">लिंग</string>
+    <string name="cow_age_months">आयु (माह)</string>
+    <string name="cow_health">स्वास्थ्य स्थिति</string>
+    <string name="cow_yield">दैनिक अनुमानित उपज (लीटर)</string>
+    <string name="cow_new">नई गाय</string>
+    <string name="cow_edit">गाय संपादित करें</string>
+    <string name="cow_production">दूध उत्पादन</string>
+    <string name="cow_health_logs">स्वास्थ्य रिकॉर्ड</string>
+    <string name="cow_add_production">उत्पादन जोड़ें</string>
+    <string name="cow_add_health">स्वास्थ्य रिकॉर्ड जोड़ें</string>
+    <string name="cow_date_acquired">प्राप्ति तिथि</string>
+    <string name="cow_event_type">घटना प्रकार</string>
+    <string name="cow_next_due">अगली नियत तिथि</string>
+    <string name="cow_vet_name">पशु चिकित्सक का नाम</string>
+    <string name="cow_cost">लागत (₹)</string>
+    <string name="cow_litres">लीटर</string>
+    <string name="cow_lifetime_litres">कुल जीवनकाल लीटर</string>
+    <string name="cow_month_litres">इस माह लीटर</string>
+    <string name="cow_month_health_cost">माह स्वास्थ्य लागत</string>
+
+    <!-- Staff -->
+    <string name="staff_add">कर्मचारी जोड़ें</string>
+    <string name="staff_full_name">पूरा नाम</string>
+    <string name="staff_username">उपयोगकर्ता नाम</string>
+    <string name="staff_enable">सक्षम</string>
+    <string name="staff_disable">अक्षम</string>
+    <string name="staff_reset">पासवर्ड रीसेट करें</string>
+    <string name="staff_new">नया कर्मचारी</string>
+    <string name="staff_edit">कर्मचारी संपादित करें</string>
+    <string name="staff_phone_optional">फ़ोन (वैकल्पिक)</string>
+    <string name="staff_new_password">नया पासवर्ड</string>
+    <string name="staff_status_disabled">अक्षम</string>
+
+    <!-- Language -->
+    <string name="select_language">भाषा चुनें</string>
+</resources>

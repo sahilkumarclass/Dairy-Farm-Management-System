@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/bills")
 @RequiredArgsConstructor
-@PreAuthorize("hasAnyRole('OWNER','STAFF')")
+@PreAuthorize("hasRole('OWNER')")
 @Tag(name = "Billing")
 public class BillingController {
 
