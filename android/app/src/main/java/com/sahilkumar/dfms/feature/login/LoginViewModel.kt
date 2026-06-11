@@ -41,8 +41,13 @@ class LoginViewModel @Inject constructor(
                     if (role == Role.CUSTOMER) {
                         authRepository.logout()
                         _state.update { it.copy(loading = false, error = roleErrorMessage) }
+                    } else {
+                        // On OWNER/STAFF success the SessionManager state flips and nav
+                        // reacts. Reset to a clean state so this Activity-scoped, retained
+                        // ViewModel doesn't show a stale spinner if the user logs out and
+                        // returns to the login screen.
+                        _state.value = LoginUiState()
                     }
-                    // On OWNER/STAFF success the SessionManager state flips and nav reacts.
                 }
                 .onFailure { t ->
                     _state.update { it.copy(loading = false, error = t.userMessage()) }
