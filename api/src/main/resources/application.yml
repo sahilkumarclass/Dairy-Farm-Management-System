@@ -23,6 +23,7 @@ server:
   error:
     include-message: always
     include-binding-errors: always
+  address: 0.0.0.0
 
 app:
   security:

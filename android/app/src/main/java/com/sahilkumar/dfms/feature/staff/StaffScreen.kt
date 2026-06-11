@@ -20,7 +20,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,15 +32,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sahilkumar.dfms.R
+import com.sahilkumar.dfms.core.ui.screenContentPadding
+import com.sahilkumar.dfms.core.ui.components.AppSnackbarHost
 import com.sahilkumar.dfms.core.ui.components.EmptyState
 import com.sahilkumar.dfms.core.ui.components.ErrorState
 import com.sahilkumar.dfms.core.ui.components.LoadingState
 import com.sahilkumar.dfms.core.ui.components.StatusBadge
+import com.sahilkumar.dfms.core.ui.components.showError
 import com.sahilkumar.dfms.core.ui.components.statusColor
+import com.sahilkumar.dfms.core.util.userMessage
 import com.sahilkumar.dfms.model.UserResponse
 import kotlinx.coroutines.launch
 
@@ -55,11 +59,11 @@ fun StaffScreen(viewModel: StaffViewModel = hiltViewModel()) {
     var resetTarget by remember { mutableStateOf<UserResponse?>(null) }
 
     fun handle(result: Result<Unit>) {
-        result.onFailure { e -> scope.launch { snackbar.showSnackbar(e.message ?: "Error") } }
+        result.onFailure { e -> scope.launch { snackbar.showError(e.userMessage()) } }
     }
 
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbar) },
+        snackbarHost = { AppSnackbarHost(snackbar) },
         floatingActionButton = {
             FloatingActionButton(onClick = { addOrEdit = StaffEditTarget(null) }) {
                 Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.staff_add))
@@ -72,7 +76,7 @@ fun StaffScreen(viewModel: StaffViewModel = hiltViewModel()) {
                 state.error != null -> ErrorState(state.error!!, onRetry = viewModel::load)
                 state.staff.isEmpty() -> EmptyState(stringResource(R.string.staff_add))
                 else -> LazyColumn(
-                    contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp),
+                    contentPadding = screenContentPadding(),
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
                     items(state.staff) { staff ->
@@ -123,10 +127,27 @@ private fun StaffRow(
     OutlinedCard(Modifier.fillMaxWidth()) {
         Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
-                Text(staff.fullName, fontWeight = FontWeight.SemiBold)
-                Text("@${staff.username}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+                Text(
+                    staff.fullName,
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    "@${staff.username}",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.primary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
                 staff.phone?.takeIf { it.isNotBlank() }?.let {
-                    Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(
+                        it,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                 }
             }
             StatusBadge(

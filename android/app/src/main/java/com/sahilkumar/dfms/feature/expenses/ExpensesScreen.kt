@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -33,10 +34,13 @@ import com.sahilkumar.dfms.core.ui.components.DateField
 import com.sahilkumar.dfms.core.ui.components.EnumDropdown
 import com.sahilkumar.dfms.core.ui.components.FormDialog
 import com.sahilkumar.dfms.core.ui.components.PagedListScaffold
+import com.sahilkumar.dfms.core.ui.components.showError
+import com.sahilkumar.dfms.core.ui.components.showSuccess
 import com.sahilkumar.dfms.core.util.formatDate
 import com.sahilkumar.dfms.core.util.formatMoney
 import com.sahilkumar.dfms.core.util.parseMoneyOrNull
 import com.sahilkumar.dfms.core.util.todayIso
+import com.sahilkumar.dfms.core.util.userMessage
 import com.sahilkumar.dfms.model.ExpenseCategory
 import com.sahilkumar.dfms.model.ExpenseRequest
 import com.sahilkumar.dfms.model.ExpenseResponse
@@ -47,6 +51,7 @@ fun ExpensesScreen(viewModel: ExpensesViewModel = hiltViewModel()) {
     val items = viewModel.expenses.collectAsLazyPagingItems()
     val snackbar = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+    val savedMsg = stringResource(R.string.saved)
 
     var editing by remember { mutableStateOf<ExpenseResponse?>(null) }
     var showForm by remember { mutableStateOf(false) }
@@ -54,8 +59,8 @@ fun ExpensesScreen(viewModel: ExpensesViewModel = hiltViewModel()) {
     fun handle(result: Result<Unit>) {
         result.onSuccess {
             items.refresh()
-            scope.launch { snackbar.showSnackbar("OK") }
-        }.onFailure { e -> scope.launch { snackbar.showSnackbar(e.message ?: "Error") } }
+            scope.launch { snackbar.showSuccess(savedMsg) }
+        }.onFailure { e -> scope.launch { snackbar.showError(e.userMessage()) } }
     }
 
     PagedListScaffold(
@@ -67,10 +72,20 @@ fun ExpensesScreen(viewModel: ExpensesViewModel = hiltViewModel()) {
         OutlinedCard(Modifier.fillMaxWidth()) {
             Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
-                    Text(expense.category.name, fontWeight = FontWeight.SemiBold)
+                    Text(
+                        expense.category.name,
+                        fontWeight = FontWeight.SemiBold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                     Text(formatDate(expense.expenseDate), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     expense.notes?.takeIf { it.isNotBlank() }?.let {
-                        Text(it, style = MaterialTheme.typography.bodySmall)
+                        Text(
+                            it,
+                            style = MaterialTheme.typography.bodySmall,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                        )
                     }
                 }
                 Text(formatMoney(expense.amount), fontWeight = FontWeight.SemiBold)

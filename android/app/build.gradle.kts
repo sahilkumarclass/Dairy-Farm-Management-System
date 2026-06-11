@@ -21,11 +21,11 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:8080\"")
+            buildConfigField("String", "API_BASE_URL", "\"http://168.144.145.79:8080\"")
         }
         release {
             isMinifyEnabled = false
-            buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:8080\"")
+            buildConfigField("String", "API_BASE_URL", "\"http://168.144.145.79:8080\"")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }

@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -32,10 +33,13 @@ import com.sahilkumar.dfms.core.ui.components.FormDialog
 import com.sahilkumar.dfms.core.ui.components.LabeledValue
 import com.sahilkumar.dfms.core.ui.components.PagedListScaffold
 import com.sahilkumar.dfms.core.ui.components.StatusBadge
+import com.sahilkumar.dfms.core.ui.components.showError
+import com.sahilkumar.dfms.core.ui.components.showSuccess
 import com.sahilkumar.dfms.core.ui.components.statusColor
 import com.sahilkumar.dfms.core.util.formatMoney
 import com.sahilkumar.dfms.core.util.parseMoneyOrNull
 import com.sahilkumar.dfms.core.util.todayIso
+import com.sahilkumar.dfms.core.util.userMessage
 import com.sahilkumar.dfms.model.BillResponse
 import com.sahilkumar.dfms.model.PaymentMethod
 import com.sahilkumar.dfms.model.PaymentRequest
@@ -46,6 +50,7 @@ fun BillsScreen(viewModel: BillsViewModel = hiltViewModel()) {
     val items = viewModel.bills.collectAsLazyPagingItems()
     val snackbar = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+    val savedMsg = stringResource(R.string.saved)
 
     var showGenerate by remember { mutableStateOf(false) }
     var payTarget by remember { mutableStateOf<BillResponse?>(null) }
@@ -53,8 +58,8 @@ fun BillsScreen(viewModel: BillsViewModel = hiltViewModel()) {
     fun handle(result: Result<Unit>) {
         result.onSuccess {
             items.refresh()
-            scope.launch { snackbar.showSnackbar("OK") }
-        }.onFailure { e -> scope.launch { snackbar.showSnackbar(e.message ?: "Error") } }
+            scope.launch { snackbar.showSuccess(savedMsg) }
+        }.onFailure { e -> scope.launch { snackbar.showError(e.userMessage()) } }
     }
 
     PagedListScaffold(
@@ -67,7 +72,12 @@ fun BillsScreen(viewModel: BillsViewModel = hiltViewModel()) {
             Column(Modifier.padding(16.dp)) {
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f)) {
-                        Text(bill.customerName, fontWeight = FontWeight.SemiBold)
+                        Text(
+                            bill.customerName,
+                            fontWeight = FontWeight.SemiBold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
                         Text(
                             "${bill.periodMonth}/${bill.periodYear}",
                             style = MaterialTheme.typography.bodySmall,

@@ -23,13 +23,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.sahilkumar.dfms.R
 import com.sahilkumar.dfms.core.ui.components.PagedListScaffold
 import com.sahilkumar.dfms.core.ui.components.StatusBadge
+import com.sahilkumar.dfms.core.ui.components.showError
+import com.sahilkumar.dfms.core.ui.components.showSuccess
 import com.sahilkumar.dfms.core.ui.components.statusColor
+import com.sahilkumar.dfms.core.util.userMessage
 import com.sahilkumar.dfms.model.CowResponse
 import kotlinx.coroutines.launch
 
@@ -41,6 +45,7 @@ fun HerdScreen(
     val items = viewModel.cows.collectAsLazyPagingItems()
     val snackbar = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+    val savedMsg = stringResource(R.string.saved)
 
     var editing by remember { mutableStateOf<CowResponse?>(null) }
     var showForm by remember { mutableStateOf(false) }
@@ -48,8 +53,8 @@ fun HerdScreen(
     fun handle(result: Result<Unit>) {
         result.onSuccess {
             items.refresh()
-            scope.launch { snackbar.showSnackbar("OK") }
-        }.onFailure { e -> scope.launch { snackbar.showSnackbar(e.message ?: "Error") } }
+            scope.launch { snackbar.showSuccess(savedMsg) }
+        }.onFailure { e -> scope.launch { snackbar.showError(e.userMessage()) } }
     }
 
     PagedListScaffold(
@@ -61,10 +66,21 @@ fun HerdScreen(
         OutlinedCard(Modifier.fillMaxWidth().clickable { onOpenCow(cow.id) }) {
             Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
-                    Text(cow.tagNo, fontWeight = FontWeight.SemiBold)
+                    Text(
+                        cow.tagNo,
+                        fontWeight = FontWeight.SemiBold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                     val sub = listOfNotNull(cow.name, cow.breed).joinToString(" · ")
                     if (sub.isNotBlank()) {
-                        Text(sub, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(
+                            sub,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
                     }
                 }
                 StatusBadge(cow.healthStatus.name, statusColor(cow.healthStatus.name))

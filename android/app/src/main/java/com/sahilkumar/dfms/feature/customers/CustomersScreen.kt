@@ -22,7 +22,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,17 +34,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.sahilkumar.dfms.R
+import com.sahilkumar.dfms.core.ui.screenContentPadding
+import com.sahilkumar.dfms.core.ui.screenPadding
+import com.sahilkumar.dfms.core.ui.components.AppSnackbarHost
 import com.sahilkumar.dfms.core.ui.components.EmptyState
 import com.sahilkumar.dfms.core.ui.components.ErrorState
 import com.sahilkumar.dfms.core.ui.components.LoadingState
 import com.sahilkumar.dfms.core.ui.components.StatusBadge
+import com.sahilkumar.dfms.core.ui.components.showError
+import com.sahilkumar.dfms.core.ui.components.showSuccess
 import com.sahilkumar.dfms.core.ui.components.statusColor
 import com.sahilkumar.dfms.core.util.formatMoney
+import com.sahilkumar.dfms.core.util.userMessage
 import com.sahilkumar.dfms.model.CustomerResponse
 import com.sahilkumar.dfms.model.CustomerStatus
 import androidx.paging.LoadState
@@ -59,22 +65,23 @@ fun CustomersScreen(viewModel: CustomersViewModel = hiltViewModel()) {
     val status by viewModel.status.collectAsStateWithLifecycle()
     val snackbar = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+    val savedMsg = stringResource(R.string.saved)
 
     var addOrEdit by remember { mutableStateOf<EditTarget?>(null) }
     var loginTarget by remember { mutableStateOf<CustomerResponse?>(null) }
     var resetTarget by remember { mutableStateOf<CustomerResponse?>(null) }
 
-    fun handle(result: Result<Unit>, successMsg: String) {
+    fun handle(result: Result<Unit>) {
         result.onSuccess {
             items.refresh()
-            scope.launch { snackbar.showSnackbar(successMsg) }
+            scope.launch { snackbar.showSuccess(savedMsg) }
         }.onFailure { e ->
-            scope.launch { snackbar.showSnackbar(e.message ?: "Error") }
+            scope.launch { snackbar.showError(e.userMessage()) }
         }
     }
 
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbar) },
+        snackbarHost = { AppSnackbarHost(snackbar) },
         floatingActionButton = {
             FloatingActionButton(onClick = { addOrEdit = EditTarget(null) }) {
                 Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.customers_add))
@@ -87,10 +94,10 @@ fun CustomersScreen(viewModel: CustomersViewModel = hiltViewModel()) {
                 onValueChange = viewModel::onQuery,
                 label = { Text(stringResource(R.string.customers_search_hint)) },
                 singleLine = true,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = screenPadding(), vertical = 8.dp),
             )
             Row(
-                Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                Modifier.fillMaxWidth().padding(horizontal = screenPadding()),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 FilterChip(selected = status == null, onClick = { viewModel.onStatus(null) }, label = { Text(stringResource(R.string.filter_all)) })
@@ -108,7 +115,7 @@ fun CustomersScreen(viewModel: CustomersViewModel = hiltViewModel()) {
                     EmptyState(stringResource(R.string.customers_search_hint))
                 } else {
                     LazyColumn(
-                        contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp),
+                        contentPadding = screenContentPadding(),
                         verticalArrangement = Arrangement.spacedBy(10.dp),
                     ) {
                         items(items.itemCount) { index ->
@@ -118,9 +125,9 @@ fun CustomersScreen(viewModel: CustomersViewModel = hiltViewModel()) {
                                 onEdit = { addOrEdit = EditTarget(customer) },
                                 onCreateLogin = { loginTarget = customer },
                                 onResetPassword = { resetTarget = customer },
-                                onReactivate = { viewModel.reactivate(customer.id) { handle(it, customer.name) } },
-                                onStop = { viewModel.stop(customer.id) { handle(it, customer.name) } },
-                                onDelete = { viewModel.deletePermanent(customer.id) { handle(it, customer.name) } },
+                                onReactivate = { viewModel.reactivate(customer.id) { handle(it) } },
+                                onStop = { viewModel.stop(customer.id) { handle(it) } },
+                                onDelete = { viewModel.deletePermanent(customer.id) { handle(it) } },
                             )
                         }
                     }
@@ -135,7 +142,7 @@ fun CustomersScreen(viewModel: CustomersViewModel = hiltViewModel()) {
             onDismiss = { addOrEdit = null },
             onSave = { req ->
                 viewModel.save(target.customer?.id, req) { result ->
-                    handle(result, target.customer?.name ?: req.name)
+                    handle(result)
                     if (result.isSuccess) addOrEdit = null
                 }
             },
@@ -147,7 +154,7 @@ fun CustomersScreen(viewModel: CustomersViewModel = hiltViewModel()) {
             onDismiss = { loginTarget = null },
             onSubmit = { user, pass ->
                 viewModel.createLogin(c.id, user, pass) { result ->
-                    handle(result, c.name)
+                    handle(result)
                     if (result.isSuccess) loginTarget = null
                 }
             },
@@ -163,7 +170,7 @@ fun CustomersScreen(viewModel: CustomersViewModel = hiltViewModel()) {
                     resetTarget = null
                 } else {
                     viewModel.resetPassword(userId, pass) { result ->
-                        handle(result, c.name)
+                        handle(result)
                         if (result.isSuccess) resetTarget = null
                     }
                 }
@@ -188,10 +195,28 @@ private fun CustomerRow(
     OutlinedCard(Modifier.fillMaxWidth()) {
         Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
-                Text(customer.name, fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.titleMedium)
-                Text(customer.phone, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(
+                    customer.name,
+                    fontWeight = FontWeight.SemiBold,
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    customer.phone,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
                 customer.username?.let {
-                    Text("@$it", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+                    Text(
+                        "@$it",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.primary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                 }
                 customer.customMilkRate?.let {
                     Text(formatMoney(it), style = MaterialTheme.typography.bodySmall)

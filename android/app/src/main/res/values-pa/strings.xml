@@ -10,6 +10,7 @@
     <string name="nav_bills">ਬਿੱਲ</string>
     <string name="nav_herd">ਪਸ਼ੂ</string>
     <string name="nav_staff">ਕਰਮਚਾਰੀ</string>
+    <string name="nav_more">ਹੋਰ</string>
 
     <!-- Common actions -->
     <string name="action_save">ਸੰਭਾਲੋ</string>

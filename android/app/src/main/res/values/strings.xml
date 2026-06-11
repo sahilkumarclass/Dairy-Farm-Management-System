@@ -11,6 +11,7 @@
     <string name="nav_bills">Bills</string>
     <string name="nav_herd">Herd</string>
     <string name="nav_staff">Staff</string>
+    <string name="nav_more">More</string>
 
     <!-- Common actions -->
     <string name="action_save">Save</string>

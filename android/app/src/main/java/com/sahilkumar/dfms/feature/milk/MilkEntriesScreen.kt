@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.SnackbarHostState
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -30,10 +31,13 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.sahilkumar.dfms.R
 import com.sahilkumar.dfms.core.ui.components.PagedListScaffold
 import com.sahilkumar.dfms.core.ui.components.StatusBadge
+import com.sahilkumar.dfms.core.ui.components.showError
+import com.sahilkumar.dfms.core.ui.components.showSuccess
 import com.sahilkumar.dfms.core.ui.theme.BrandGreen
 import com.sahilkumar.dfms.core.util.formatDate
 import com.sahilkumar.dfms.core.util.formatLiters
 import com.sahilkumar.dfms.core.util.formatMoney
+import com.sahilkumar.dfms.core.util.userMessage
 import com.sahilkumar.dfms.model.MilkEntryResponse
 import kotlinx.coroutines.launch
 
@@ -43,6 +47,7 @@ fun MilkEntriesScreen(viewModel: MilkViewModel = hiltViewModel()) {
     val customers by viewModel.customers.collectAsStateWithLifecycle()
     val snackbar = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+    val savedMsg = stringResource(R.string.saved)
 
     var editing by remember { mutableStateOf<MilkEntryResponse?>(null) }
     var showForm by remember { mutableStateOf(false) }
@@ -50,8 +55,8 @@ fun MilkEntriesScreen(viewModel: MilkViewModel = hiltViewModel()) {
     fun handle(result: Result<Unit>) {
         result.onSuccess {
             items.refresh()
-            scope.launch { snackbar.showSnackbar("OK") }
-        }.onFailure { e -> scope.launch { snackbar.showSnackbar(e.message ?: "Error") } }
+            scope.launch { snackbar.showSuccess(savedMsg) }
+        }.onFailure { e -> scope.launch { snackbar.showError(e.userMessage()) } }
     }
 
     PagedListScaffold(
@@ -63,11 +68,18 @@ fun MilkEntriesScreen(viewModel: MilkViewModel = hiltViewModel()) {
         OutlinedCard(Modifier.fillMaxWidth()) {
             Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
-                    Text(entry.customerName, fontWeight = FontWeight.SemiBold)
+                    Text(
+                        entry.customerName,
+                        fontWeight = FontWeight.SemiBold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                     Text(
                         "${formatDate(entry.entryDate)} · ${entry.session.name} · ${entry.milkType.name}",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                     )
                     Text(
                         "${formatLiters(entry.quantityLiters)} · ${formatMoney(entry.totalAmount)}",

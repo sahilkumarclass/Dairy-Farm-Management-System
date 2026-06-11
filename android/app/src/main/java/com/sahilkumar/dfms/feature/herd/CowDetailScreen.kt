@@ -15,7 +15,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -34,12 +33,15 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sahilkumar.dfms.R
+import com.sahilkumar.dfms.core.ui.components.AppSnackbarHost
 import com.sahilkumar.dfms.core.ui.components.ErrorState
 import com.sahilkumar.dfms.core.ui.components.LabeledValue
 import com.sahilkumar.dfms.core.ui.components.LoadingState
+import com.sahilkumar.dfms.core.ui.components.showError
 import com.sahilkumar.dfms.core.util.formatDate
 import com.sahilkumar.dfms.core.util.formatLiters
 import com.sahilkumar.dfms.core.util.formatMoney
+import com.sahilkumar.dfms.core.util.userMessage
 import kotlinx.coroutines.launch
 
 @Composable
@@ -57,10 +59,10 @@ fun CowDetailScreen(
     LaunchedEffect(cowId) { viewModel.load(cowId) }
 
     fun handle(result: Result<Unit>) {
-        result.onFailure { e -> scope.launch { snackbar.showSnackbar(e.message ?: "Error") } }
+        result.onFailure { e -> scope.launch { snackbar.showError(e.userMessage()) } }
     }
 
-    Scaffold(snackbarHost = { SnackbarHost(snackbar) }) { padding ->
+    Scaffold(snackbarHost = { AppSnackbarHost(snackbar) }) { padding ->
         when {
             state.loading -> LoadingState(Modifier.padding(padding))
             state.error != null -> ErrorState(state.error!!, onRetry = { viewModel.load(cowId) }, modifier = Modifier.padding(padding))
