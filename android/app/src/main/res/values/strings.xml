@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DairySmart Pro</string>
+    <string name="brand_tagline">Dairy Farm Management</string>
+
+    <!-- Navigation -->
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_customers">Customers</string>
+    <string name="nav_milk">Milk Entries</string>
+    <string name="nav_expenses">Expenses</string>
+    <string name="nav_bills">Bills</string>
+    <string name="nav_herd">Herd</string>
+    <string name="nav_staff">Staff</string>
+
+    <!-- Common actions -->
+    <string name="action_save">Save</string>
+    <string name="action_saving">Saving…</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_add">Add</string>
+    <string name="action_retry">Retry</string>
+    <string name="action_search">Search</string>
+    <string name="action_sign_out">Sign out</string>
+    <string name="action_close">Close</string>
+    <string name="action_generate">Generate</string>
+
+    <!-- Common labels -->
+    <string name="common_loading">Loading…</string>
+    <string name="common_active">Active</string>
+    <string name="common_inactive">Inactive</string>
+    <string name="common_phone">Phone</string>
+    <string name="common_name">Name</string>
+    <string name="common_address">Address</string>
+    <string name="common_notes">Notes</string>
+    <string name="common_notes_optional">Notes (optional)</string>
+    <string name="common_date">Date</string>
+    <string name="common_amount">Amount (₹)</string>
+    <string name="common_status">Status</string>
+    <string name="common_language">Language</string>
+    <string name="common_none">—</string>
+    <string name="common_optional">(optional)</string>
+    <string name="generic_error">Something went wrong.</string>
+    <string name="saved">Saved</string>
+    <string name="deleted">Deleted</string>
+
+    <!-- Login -->
+    <string name="login_title">Sign in</string>
+    <string name="login_subtitle">Welcome back</string>
+    <string name="login_username">Username</string>
+    <string name="login_password">Password</string>
+    <string name="login_submit">Sign in</string>
+    <string name="login_signing_in">Signing in…</string>
+    <string name="login_role_error">This app is for owners and staff only.</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_today_liters">Today\'s milk</string>
+    <string name="dashboard_today_sales">Today\'s sales</string>
+    <string name="dashboard_month_liters">Month milk</string>
+    <string name="dashboard_month_sales">Month sales</string>
+    <string name="dashboard_month_expenses">Month expenses</string>
+    <string name="dashboard_month_profit">Month profit</string>
+    <string name="dashboard_outstanding">Outstanding dues</string>
+    <string name="dashboard_active_customers">Active customers</string>
+
+    <!-- Customers -->
+    <string name="customers_add">Add customer</string>
+    <string name="customers_search_hint">Search name or phone</string>
+    <string name="customer_username">Username</string>
+    <string name="customer_custom_rate">Custom rate per litre (₹)</string>
+    <string name="customer_create_login">Create login</string>
+    <string name="customer_reset_password">Reset password</string>
+    <string name="customer_reactivate">Reactivate</string>
+    <string name="customer_stop">Stop service</string>
+    <string name="customer_delete">Delete permanently</string>
+    <string name="customer_new">New customer</string>
+    <string name="customer_edit">Edit customer</string>
+    <string name="phone_helper_10">Exactly 10 digits</string>
+    <string name="filter_all">All</string>
+
+    <!-- Milk -->
+    <string name="milk_add">Add milk entry</string>
+    <string name="milk_type">Milk type</string>
+    <string name="milk_quantity">Quantity (litres)</string>
+    <string name="milk_rate">Rate per litre (₹)</string>
+    <string name="milk_session">Session</string>
+    <string name="milk_total">Total</string>
+    <string name="milk_new">New milk entry</string>
+    <string name="milk_edit">Edit milk entry</string>
+    <string name="milk_customer">Customer</string>
+
+    <!-- Expenses -->
+    <string name="expenses_add">Add expense</string>
+    <string name="expense_category">Category</string>
+    <string name="expense_new">New expense</string>
+    <string name="expense_edit">Edit expense</string>
+
+    <!-- Bills -->
+    <string name="bills_generate">Generate bills</string>
+    <string name="bill_period">Period</string>
+    <string name="bill_total">Total</string>
+    <string name="bill_paid">Paid</string>
+    <string name="bill_remaining">Remaining</string>
+    <string name="bill_record_payment">Record payment</string>
+    <string name="bill_payments">Payments</string>
+    <string name="payment_method">Method</string>
+    <string name="payment_reference">Reference (optional)</string>
+    <string name="bill_month">Month</string>
+    <string name="bill_year">Year</string>
+    <string name="bills_generate_confirm">Generate bills for this month?</string>
+
+    <!-- Herd -->
+    <string name="herd_add">Add cow</string>
+    <string name="cow_tag">Tag number</string>
+    <string name="cow_breed">Breed</string>
+    <string name="cow_gender">Gender</string>
+    <string name="cow_age_months">Age (months)</string>
+    <string name="cow_health">Health status</string>
+    <string name="cow_yield">Daily yield estimate (litres)</string>
+    <string name="cow_new">New cow</string>
+    <string name="cow_edit">Edit cow</string>
+    <string name="cow_production">Milk production</string>
+    <string name="cow_health_logs">Health logs</string>
+    <string name="cow_add_production">Add production</string>
+    <string name="cow_add_health">Add health log</string>
+    <string name="cow_date_acquired">Date acquired</string>
+    <string name="cow_event_type">Event type</string>
+    <string name="cow_next_due">Next due date</string>
+    <string name="cow_vet_name">Vet name</string>
+    <string name="cow_cost">Cost (₹)</string>
+    <string name="cow_litres">Litres</string>
+    <string name="cow_lifetime_litres">Lifetime litres</string>
+    <string name="cow_month_litres">This month litres</string>
+    <string name="cow_month_health_cost">Month health cost</string>
+
+    <!-- Staff -->
+    <string name="staff_add">Add staff</string>
+    <string name="staff_full_name">Full name</string>
+    <string name="staff_username">Username</string>
+    <string name="staff_enable">Enable</string>
+    <string name="staff_disable">Disable</string>
+    <string name="staff_reset">Reset password</string>
+    <string name="staff_new">New staff</string>
+    <string name="staff_edit">Edit staff</string>
+    <string name="staff_phone_optional">Phone (optional)</string>
+    <string name="staff_new_password">New password</string>
+    <string name="staff_status_disabled">DISABLED</string>
+
+    <!-- Language -->
+    <string name="select_language">Select language</string>
+    <string name="language_english">English</string>
+    <string name="language_hindi">हिंदी</string>
+    <string name="language_punjabi">ਪੰਜਾਬੀ</string>
+</resources>

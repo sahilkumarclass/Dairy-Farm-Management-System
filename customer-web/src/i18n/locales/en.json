@@ -1,0 +1,82 @@
+{
+  "common": {
+    "loading": "Loading…",
+    "language": "Language",
+    "appName": "DairySmart"
+  },
+  "nav": {
+    "overview": "Overview",
+    "milkHistory": "Milk history",
+    "bills": "Bills"
+  },
+  "shell": {
+    "greeting": "Hi, {{name}}",
+    "signOut": "Sign out"
+  },
+  "login": {
+    "title": "DairySmart",
+    "subtitle": "Sign in to view your milk history and bills",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Sign in",
+    "signingIn": "Signing in…",
+    "customerOnly": "This portal is only for customers. Please use the admin app at {{url}}.",
+    "welcome": "Welcome, {{name}}"
+  },
+  "dashboard": {
+    "welcome": "Welcome, {{name}}",
+    "subtitle": "Your milk delivery and billing at a glance",
+    "milkThisMonth": "Milk this month",
+    "estimatedBill": "Estimated bill",
+    "outstandingTotal": "Outstanding total",
+    "currentMonthStatus": "Current month status",
+    "billNotGenerated": "Bill not generated yet",
+    "yourDetails": "Your details",
+    "phone": "Phone:",
+    "address": "Address:",
+    "ratePerLiter": "Rate per liter:",
+    "usesDefault": "uses default",
+    "loadError": "Couldn't load your dashboard."
+  },
+  "milk": {
+    "title": "Milk history",
+    "subtitle": "Every entry recorded for you",
+    "date": "Date",
+    "session": "Session",
+    "type": "Type",
+    "liters": "Liters",
+    "rate": "Rate",
+    "amount": "Amount",
+    "empty": "No entries yet"
+  },
+  "bills": {
+    "title": "Bills",
+    "subtitle": "All your monthly bills and dues",
+    "period": "Period",
+    "liters": "Liters",
+    "total": "Total",
+    "paid": "Paid",
+    "remaining": "Remaining",
+    "status": "Status",
+    "empty": "No bills yet"
+  },
+  "status": {
+    "PAID": "PAID",
+    "PARTIAL": "PARTIAL",
+    "UNPAID": "UNPAID"
+  },
+  "months": [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ]
+}
