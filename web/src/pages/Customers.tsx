@@ -166,6 +166,7 @@ export function CustomersPage() {
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>
+                <TableHead>Username</TableHead>
                 <TableHead>Phone</TableHead>
                 <TableHead>Address</TableHead>
                 <TableHead>Custom Rate</TableHead>
@@ -176,12 +177,12 @@ export function CustomersPage() {
             <TableBody>
               {isLoading && (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center text-muted-foreground">Loading…</TableCell>
+                  <TableCell colSpan={7} className="text-center text-muted-foreground">Loading…</TableCell>
                 </TableRow>
               )}
               {data?.content.length === 0 && !isLoading && (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center text-muted-foreground">No customers match</TableCell>
+                  <TableCell colSpan={7} className="text-center text-muted-foreground">No customers match</TableCell>
                 </TableRow>
               )}
               {data?.content.map((c: Customer) => {
@@ -189,6 +190,7 @@ export function CustomersPage() {
                 return (
                   <TableRow key={c.id} className={cn(inactive && "opacity-60")}>
                     <TableCell className="font-medium">{c.name}</TableCell>
+                    <TableCell className="text-muted-foreground">{c.username ?? "—"}</TableCell>
                     <TableCell>{c.phone}</TableCell>
                     <TableCell className="text-muted-foreground">{c.address ?? "—"}</TableCell>
                     <TableCell>{c.customMilkRate ? formatCurrency(c.customMilkRate) : "—"}</TableCell>
@@ -320,7 +322,9 @@ function CustomerDialog({ open, onOpenChange, onSubmit, submitting }: DialogProp
           </div>
           <div className="space-y-2">
             <Label htmlFor="phone">Phone</Label>
-            <Input id="phone" value={phone} onChange={(e) => setPhone(e.target.value)} required />
+            <Input id="phone" value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
+                   inputMode="numeric" maxLength={10} pattern="\d{10}"
+                   title="Phone must be exactly 10 digits" required />
           </div>
           <div className="space-y-2">
             <Label htmlFor="address">Address</Label>

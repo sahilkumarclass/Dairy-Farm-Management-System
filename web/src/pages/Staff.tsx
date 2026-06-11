@@ -380,8 +380,10 @@ function StaffCreateDialog({ open, onOpenChange, onSubmit, submitting }: CreateD
             <Input
               id="s-phone"
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              maxLength={20}
+              onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
+              inputMode="numeric"
+              maxLength={10}
+              pattern="\d{10}"
             />
           </div>
           <DialogFooter>
@@ -452,8 +454,10 @@ function StaffEditDialog({ open, onOpenChange, staff, onSubmit, submitting }: Ed
             <Input
               id="e-phone"
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              maxLength={20}
+              onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
+              inputMode="numeric"
+              maxLength={10}
+              pattern="\d{10}"
             />
           </div>
           <DialogFooter>
