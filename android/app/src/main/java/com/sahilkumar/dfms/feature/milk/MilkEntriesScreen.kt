@@ -63,7 +63,7 @@ fun MilkEntriesScreen(viewModel: MilkViewModel = hiltViewModel()) {
         items = items,
         emptyMessage = stringResource(R.string.milk_add),
         snackbar = snackbar,
-        onAdd = { editing = null; showForm = true },
+        onAdd = { editing = null; viewModel.refreshCustomers(); showForm = true },
     ) { entry ->
         OutlinedCard(Modifier.fillMaxWidth()) {
             Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -87,7 +87,7 @@ fun MilkEntriesScreen(viewModel: MilkViewModel = hiltViewModel()) {
                     )
                 }
                 StatusBadge(entry.session.name, BrandGreen)
-                IconButton(onClick = { editing = entry; showForm = true }) {
+                IconButton(onClick = { editing = entry; viewModel.refreshCustomers(); showForm = true }) {
                     Icon(Icons.Filled.Edit, contentDescription = stringResource(R.string.action_edit))
                 }
                 IconButton(onClick = { viewModel.delete(entry.id) { handle(it) } }) {

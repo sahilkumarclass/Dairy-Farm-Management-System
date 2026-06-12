@@ -34,9 +34,9 @@ class MilkViewModel @Inject constructor(
     private val _customers = MutableStateFlow<List<CustomerResponse>>(emptyList())
     val customers: StateFlow<List<CustomerResponse>> = _customers.asStateFlow()
 
-    init { loadCustomers() }
+    init { refreshCustomers() }
 
-    private fun loadCustomers() {
+    fun refreshCustomers() {
         viewModelScope.launch {
             runCatching { api.customers(null, "ACTIVE", 0, 200) }
                 .onSuccess { _customers.value = it.content }
